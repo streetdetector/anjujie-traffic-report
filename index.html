@@ -110,12 +110,17 @@
                     <h3 class="text-5xl font-black text-sky-400 font-mono tracking-tight" id="metric-total">0</h3>
                     <span class="text-lg text-slate-400 font-medium">件</span>
                 </div>
-                <div class="w-full bg-slate-900/80 rounded-lg p-3 border border-slate-700">
-                    <p class="text-sm text-slate-400 flex justify-between items-center mb-2"><span>觀測日均件數</span> <strong class="text-slate-200 font-mono" id="metric-daily-avg-small">0</strong></p>
-                    <div class="h-px w-full bg-slate-800 mb-2"></div>
+                <div class="w-full bg-slate-900/80 rounded-lg p-3 border border-slate-700 space-y-2">
+                    <p class="text-sm text-slate-400 flex justify-between items-center"><span>觀測日均件數</span> <strong class="text-slate-200 font-mono" id="metric-daily-avg-small">0</strong></p>
+                    <p class="text-sm text-slate-400 flex justify-between items-center"><span>觀測時均件數</span> <strong class="text-slate-200 font-mono" id="metric-hourly-avg-small">0</strong></p>
+                    <div class="h-px w-full bg-slate-800"></div>
                     <p class="text-sm text-slate-400 flex justify-between items-center">
-                        <span>模型推估日均數</span> 
-                        <strong class="text-rose-400 font-mono" id="metric-estimated-daily">0</strong>
+                        <span>推估月均總數</span> 
+                        <strong class="text-rose-400 font-mono" id="metric-estimated-monthly">0</strong>
+                    </p>
+                    <p class="text-sm text-slate-400 flex justify-between items-center">
+                        <span>推估時均件數</span> 
+                        <strong class="text-rose-400 font-mono" id="metric-estimated-hourly">0</strong>
                     </p>
                 </div>
             </div>
@@ -361,6 +366,7 @@
             }
 
             const dailyAvg = (total / days).toFixed(1);
+            const hourlyAvg = (total / (days * 24)).toFixed(2);
 
             // 在地經驗推估模型 (客觀數據推算)
             const peakHoursPerDay = 4;
@@ -368,10 +374,14 @@
             const offPeakHoursPerDay = 6;
             const offPeakCasesPerHour = 5;
             const estimatedDailyCases = (peakHoursPerDay * peakCasesPerHour) + (offPeakHoursPerDay * offPeakCasesPerHour);
+            const estimatedMonthlyCases = estimatedDailyCases * 30;
+            const estimatedHourlyCases = (estimatedDailyCases / 24).toFixed(1);
             const estimatedAnnualCases = estimatedDailyCases * 365;
 
-            $el('metric-daily-avg-small').innerText = `${dailyAvg}`;
-            $el('metric-estimated-daily').innerText = `${estimatedDailyCases}`;
+            $el('metric-daily-avg-small').innerText = `${dailyAvg} 件`;
+            $el('metric-hourly-avg-small').innerText = `${hourlyAvg} 件`;
+            $el('metric-estimated-monthly').innerText = `${estimatedMonthlyCases.toLocaleString('en-US')} 件`;
+            $el('metric-estimated-hourly').innerText = `約 ${estimatedHourlyCases} 件`;
 
             // 4. 計算 24H 時間分佈
             const hourCounts = new Array(24).fill(0);
@@ -421,14 +431,15 @@
             const typeCounts = {};
             evidenceData.forEach(i => { typeCounts[i.type] = (typeCounts[i.type] || 0) + 1; });
             const sortedTypes = Object.entries(typeCounts).sort((a,b)=>b[1]-a[1]);
+            const topType = sortedTypes.length > 0 ? sortedTypes[0][0] : '違規停車';
             
             // 客觀平實的數據摘要與建議
             const insightText = `
                 <div class="mb-6 space-y-3">
                     <h4 class="text-lg font-bold text-slate-100 border-l-4 border-sky-500 pl-3">1. 觀測總量與推估模型</h4>
                     <p>
-                        本觀測期內共記錄 <strong>${total}</strong> 件違規實證。需聲明，此為人工有限時段巡查之數據，並非全日完整觀測總量。<br>
-                        依據地區觀察經驗，若設定該路段主要活躍期為 11:00 至 21:00，並以尖峰時段每小時 ${peakCasesPerHour} 件之基準推算，<strong>全日實際違規總數估值約為 ${estimatedDailyCases} 件</strong>。依此模型計算，全年潛在違規件數預估可達 ${estimatedAnnualCases.toLocaleString('en-US')} 件。
+                        本觀測期內共記錄 <strong>${total}</strong> 件違規實證。需聲明，此為人工有限時段巡查之數據，並非全日完整觀測總量（觀測平均每小時發生 <strong>${hourlyAvg}</strong> 件）。<br>
+                        依據地區觀察經驗，若設定該路段主要活躍期為 11:00 至 21:00，並以尖峰時段每小時 ${peakCasesPerHour} 件之基準推算，<strong>全日實際違規總數估值約為 ${estimatedDailyCases} 件</strong>（平均每小時發生 <strong>${estimatedHourlyCases}</strong> 件）。依此模型計算，每月違規總數高達 <strong>${estimatedMonthlyCases.toLocaleString('en-US')}</strong> 件，全年潛在違規件數預估可達 ${estimatedAnnualCases.toLocaleString('en-US')} 件。
                     </p>
                 </div>
                 
