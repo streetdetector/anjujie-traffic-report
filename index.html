@@ -86,7 +86,7 @@
             </div>
         </div>
 
-        <!-- 客觀分析摘要 (去除浮誇修辭) -->
+        <!-- 客觀分析摘要 -->
         <div class="dashboard-card p-8 border border-slate-700 bg-slate-800/50">
             <h3 class="text-2xl font-black text-slate-100 mb-6 flex items-center gap-3 border-b border-slate-700 pb-4">
                 <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
@@ -473,27 +473,33 @@
                 </div>`
             ).join('');
             
-            // 客觀平實的數據摘要與建議
+            // 🚨 重點顏色與字體大小強調化之數據摘要
             const insightText = `
                 <div class="mb-6 space-y-3">
-                    <h4 class="text-lg font-bold text-slate-100 border-l-4 border-sky-500 pl-3">1. 觀測總量與推估模型</h4>
-                    <p>
-                        本觀測期內共記錄 <strong>${total}</strong> 件違規實證。需聲明，此為人工有限時段巡查之數據，並非全日完整觀測總量（觀測平均每小時發生 <strong>${hourlyAvg}</strong> 件）。<br>
-                        依據地區觀察經驗，若設定該路段主要活躍期為 11:00 至 21:00，並以尖峰時段每小時 ${peakCasesPerHour} 件之基準推算，<strong>全日實際違規總數估值約為 ${estimatedDailyCases} 件</strong>（平均每小時發生 <strong>${estimatedHourlyCases}</strong> 件）。依此模型計算，每月違規總數高達 <strong>${estimatedMonthlyCases.toLocaleString('en-US')}</strong> 件，全年潛在違規件數預估可達 ${estimatedAnnualCases.toLocaleString('en-US')} 件。
+                    <h4 class="text-xl font-black text-slate-100 border-l-4 border-sky-500 pl-3">1. 觀測總量與推估模型</h4>
+                    <p class="text-slate-300 leading-relaxed">
+                        本觀測期內共記錄 <strong class="text-2xl text-sky-400 font-mono mx-1">${total}</strong> 件違規實證。需聲明，此為人工有限時段巡查之數據，並非全日完整觀測總量（觀測平均每小時發生 <strong class="text-lg text-sky-300">${hourlyAvg}</strong> 件）。<br><br>
+                        依據地區觀察經驗，若設定該路段主要活躍期為 11:00 至 21:00，並以尖峰時段每小時 <span class="text-amber-300 font-bold">${peakCasesPerHour}</span> 件之基準推算，<strong class="text-xl text-rose-400 block mt-2 mb-1">全日實際違規總數估值高達 <span class="text-3xl font-black mx-1">${estimatedDailyCases}</span> 件</strong>
+                        （平均每小時發生 <strong class="text-rose-300">${estimatedHourlyCases}</strong> 件）。依此模型計算，每月違規總數高達 <strong class="text-2xl text-rose-500 font-mono mx-1">${estimatedMonthlyCases.toLocaleString('en-US')}</strong> 件，全年潛在違規件數預估可達 <strong class="text-2xl text-rose-600 font-mono mx-1">${estimatedAnnualCases.toLocaleString('en-US')}</strong> 件。
                     </p>
                 </div>
                 
                 <div class="mb-6 space-y-3">
-                    <h4 class="text-lg font-bold text-slate-100 border-l-4 border-rose-500 pl-3">2. 空間分佈與行人安全影響</h4>
-                    <p>
-                        數據顯示，違規路段集中於 <strong>${topHotspot}</strong> 及其周邊區域。其中值得關注的是，路口之「人行道外推處 (Curb Extension)」頻繁遭遇機動車輛違停。此一現象會直接阻斷行人穿越道與無障礙坡道，迫使嬰兒車、輪椅使用者及一般行人必須進入車道通行，大幅提升交通事故風險。
+                    <h4 class="text-xl font-black text-slate-100 border-l-4 border-rose-500 pl-3">2. 空間分佈與行人安全影響</h4>
+                    <p class="text-slate-300 leading-relaxed">
+                        數據顯示，違規路段高度集中於 <strong class="text-xl text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded mx-1">${topHotspot}</strong> 及其周邊區域。<br><br>
+                        其中<span class="text-rose-400 font-bold text-lg">最嚴重之威脅在於：</span>路口之 <strong class="text-2xl text-rose-500 border-b-2 border-rose-500/50 mx-1">「人行道外推處 (Curb Extension)」</strong> 頻繁遭遇機動車輛違停。<br>
+                        此現象直接阻斷行人穿越道與無障礙坡道，<strong class="text-xl text-rose-400 mt-1 block">迫使嬰兒車、輪椅使用者及一般行人必須進入車道通行，大幅提升交通事故致命風險！</strong>
                     </p>
                 </div>
 
                 <div class="space-y-3">
-                    <h4 class="text-lg font-bold text-slate-100 border-l-4 border-indigo-500 pl-3">3. 具體改善建議</h4>
-                    <p>
-                        事後之違規舉發無法即時排除當下對行人造成的實質阻礙。為確切保障行人路權及無障礙設施之可用性，<strong>建議相關權責單位評估於「人行道外推處」等關鍵無障礙節點，重新建置實體金屬防護柵欄或防撞桿</strong>。透過物理性防護設施，方能有效防止車輛違規駛入與停放，確保人行環境之連續性與安全性。
+                    <h4 class="text-xl font-black text-slate-100 border-l-4 border-indigo-500 pl-3">3. 具體改善建議</h4>
+                    <p class="text-slate-300 leading-relaxed">
+                        事後之違規舉發無法即時排除當下對行人造成的實質阻礙。為確切保障行人路權及無障礙設施之可用性：<br><br>
+                        <strong class="text-2xl text-indigo-400 block mb-2">建議相關權責單位應立即評估：</strong>
+                        於「人行道外推處」等關鍵無障礙節點，<strong class="text-2xl text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded border border-emerald-500/30">重新建置實體金屬防護柵欄或防撞桿</strong>。<br>
+                        透過不可跨越的物理性防護設施，方能有效防止車輛違規駛入與停放，確保人行環境之連續性與絕對安全性。
                     </p>
                 </div>
             `;
