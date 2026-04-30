@@ -40,7 +40,7 @@
             <div class="flex justify-between items-center h-[72px]">
                 <div class="flex items-center gap-4">
                     <div class="w-10 h-10 bg-slate-800 text-slate-300 rounded-lg flex items-center justify-center border border-slate-700">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002-2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                     </div>
                     <div>
                         <h1 class="font-bold text-xl text-slate-100 tracking-tight flex items-center gap-3" id="header-title">
@@ -135,9 +135,17 @@
                     <h3 class="text-5xl font-black text-rose-500 font-mono tracking-tight" id="metric-pedestrian">0</h3>
                     <span class="text-lg text-slate-400 font-medium">件</span>
                 </div>
-                <p class="text-sm text-slate-400 leading-relaxed bg-slate-900/80 p-3 rounded-lg border border-slate-700">
-                    統計包含佔用人行道、無障礙坡道及行人穿越道之車輛，實質影響行人與無障礙通行權益。
-                </p>
+                <div class="w-full bg-slate-900/80 p-3 rounded-lg border border-slate-700">
+                    <p class="text-xs text-slate-400 leading-relaxed mb-3">
+                        統計包含佔用人行道、無障礙坡道及行人穿越道之車輛，實質影響行人與無障礙通行權益。
+                    </p>
+                    <div class="border-t border-slate-700 pt-3">
+                        <p class="text-rose-400 font-bold mb-2 text-xs">整體違規行為 Top 3：</p>
+                        <div id="top-violation-types" class="space-y-1.5">
+                            <!-- JS 動態生成 -->
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- 指標 3 -->
@@ -149,9 +157,17 @@
                 <div class="flex items-baseline gap-2 mb-4">
                     <h3 class="text-5xl font-black text-amber-400 font-mono tracking-tight" id="metric-peak-time">--:--</h3>
                 </div>
-                <p class="text-sm text-slate-400 leading-relaxed bg-slate-900/80 p-3 rounded-lg border border-slate-700">
-                    記錄區間內違規最為密集之小時區段，該時段內共觀測得 <strong class="text-amber-400 font-mono" id="metric-peak-count">0</strong> 件違規。
-                </p>
+                <div class="w-full bg-slate-900/80 p-3 rounded-lg border border-slate-700">
+                    <p class="text-xs text-slate-400 leading-relaxed mb-3">
+                        記錄區間內違規最為密集之小時區段，該單一時段內共觀測得 <strong class="text-amber-400 font-mono text-sm" id="metric-peak-count">0</strong> 件違規。
+                    </p>
+                    <div class="border-t border-slate-700 pt-3">
+                        <p class="text-amber-400 font-bold mb-2 text-xs">高風險時段 Top 3：</p>
+                        <div id="top-peak-hours" class="space-y-1.5">
+                            <!-- JS 動態生成 -->
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -271,7 +287,8 @@
             ]
         };
 
-        const DEFAULT_MAP_URL = "https://www.google.com/maps/d/u/0/embed?mid=1JhYYDbVfjTKqDtZapAF8d4xrDW00iBI";
+        // 預設替換為您的最新 Google Maps URL (轉換為 embed 格式)
+        const DEFAULT_MAP_URL = "https://www.google.com/maps/d/u/3/embed?mid=18Z9qwJ0Bl_nhC-MThGWSBGpd8Zxy7ik";
 
         window.onload = () => {
             const savedMapUrl = localStorage.getItem('public_dashboard_map_url') || DEFAULT_MAP_URL;
@@ -399,6 +416,20 @@
             $el('metric-peak-time').innerText = formattedPeak;
             $el('metric-peak-count').innerText = peakCount;
 
+            // --- 產生高風險時段 Top 3 列表 ---
+            const sortedHours = hourCounts
+                .map((count, hour) => ({ hour, count }))
+                .filter(h => h.count > 0)
+                .sort((a, b) => b.count - a.count)
+                .slice(0, 3);
+            
+            $el('top-peak-hours').innerHTML = sortedHours.map((h, idx) => 
+                `<div class="flex justify-between items-center text-xs">
+                    <span class="text-slate-300">${idx + 1}. ${h.hour.toString().padStart(2, '0')}:00 區間</span>
+                    <span class="text-amber-400 font-mono">${h.count} 件</span>
+                </div>`
+            ).join('');
+
             // 5. 空間熱區
             const locations = {};
             evidenceData.forEach(i => {
@@ -432,6 +463,15 @@
             evidenceData.forEach(i => { typeCounts[i.type] = (typeCounts[i.type] || 0) + 1; });
             const sortedTypes = Object.entries(typeCounts).sort((a,b)=>b[1]-a[1]);
             const topType = sortedTypes.length > 0 ? sortedTypes[0][0] : '違規停車';
+
+            // --- 產生整體違規行為 Top 3 列表 ---
+            const top3Types = sortedTypes.slice(0, 3);
+            $el('top-violation-types').innerHTML = top3Types.map((t, idx) => 
+                `<div class="flex justify-between items-center text-xs">
+                    <span class="text-slate-300">${idx + 1}. ${t[0]}</span>
+                    <span class="text-rose-400 font-mono">${t[1]} 件</span>
+                </div>`
+            ).join('');
             
             // 客觀平實的數據摘要與建議
             const insightText = `
