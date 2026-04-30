@@ -443,17 +443,33 @@
             
             $el('hotspot-list').innerHTML = sortedLocations.map((loc, index) => {
                 const percentage = (loc[1] / maxLocCount) * 100;
+                const isTop3 = index < 3;
+                const bgStyle = isTop3 ? 'bg-rose-50 border-2 border-rose-200 shadow-sm' : 'bg-white border-2 border-slate-100 shadow-sm';
+                const rankColor = isTop3 ? 'text-white bg-rose-600 shadow-md' : 'text-slate-600 bg-slate-100 border-2 border-slate-200';
+                const barColor = isTop3 ? 'bg-gradient-to-r from-rose-500 to-rose-400' : 'bg-slate-400';
+                const textStyle = isTop3 ? 'text-rose-900 font-black text-lg flex items-center flex-wrap gap-1.5' : 'text-slate-700 font-bold text-base flex items-center flex-wrap gap-1.5';
+                const valStyle = isTop3 ? 'text-rose-700 font-black text-xl' : 'text-slate-700 font-bold text-lg';
+                
+                // 📍 新增：地標自動判定邏輯
+                let landmarkStr = "";
+                if (loc[0].includes("49號")) landmarkStr = "真善美牛肉麵前";
+                else if (loc[0].includes("33號")) landmarkStr = "安居7-11前";
+                // 您可以繼續在此處複製新增更多地標
+                // else if (loc[0].includes("XX號")) landmarkStr = "XXX前";
+
+                const landmarkBadge = landmarkStr ? `<span class="text-xs px-2 py-0.5 rounded-md border shadow-sm ${isTop3 ? 'bg-rose-100 text-rose-700 border-rose-300' : 'bg-slate-100 text-slate-500 border-slate-300'} font-bold">${landmarkStr}</span>` : "";
+
                 return `
-                <div class="flex flex-col gap-2 bg-slate-800/40 p-3 rounded-lg border border-slate-700/50">
-                    <div class="flex justify-between items-center text-sm">
-                        <div class="flex items-center gap-3">
-                            <span class="text-slate-500 font-mono">${index + 1}.</span>
-                            <span class="text-slate-200">${loc[0]}</span>
+                <div class="relative ${bgStyle} rounded-xl overflow-hidden p-4 flex flex-col gap-3 transition-all hover:scale-[1.02]">
+                    <div class="flex justify-between items-center z-10">
+                        <div class="flex items-center gap-4 flex-1">
+                            <div class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-black shrink-0 ${rankColor}">${index + 1}</div>
+                            <span class="${textStyle}">${loc[0]} ${landmarkBadge}</span>
                         </div>
-                        <span class="text-slate-400 font-mono">${loc[1]} 件</span>
+                        <span class="font-mono ${valStyle} shrink-0 pl-2">${loc[1]} <span class="text-xs font-bold opacity-70">件</span></span>
                     </div>
-                    <div class="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
-                        <div class="h-full bg-indigo-500 rounded-full opacity-80" style="width: ${percentage}%"></div>
+                    <div class="w-full h-2 bg-slate-200/50 rounded-full overflow-hidden z-10">
+                        <div class="h-full ${barColor} rounded-full" style="width: ${percentage}%"></div>
                     </div>
                 </div>`;
             }).join('');
