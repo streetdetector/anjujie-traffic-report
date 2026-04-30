@@ -450,14 +450,15 @@
                 const textStyle = isTop3 ? 'text-rose-900 font-black text-lg flex items-center flex-wrap gap-1.5' : 'text-slate-700 font-bold text-base flex items-center flex-wrap gap-1.5';
                 const valStyle = isTop3 ? 'text-rose-700 font-black text-xl' : 'text-slate-700 font-bold text-lg';
                 
-                // 📍 新增：地標自動判定邏輯
-                let landmarkStr = "";
-                if (loc[0].includes("49號")) landmarkStr = "真善美牛肉麵前";
-                else if (loc[0].includes("33號")) landmarkStr = "安居7-11前";
-                // 您可以繼續在此處複製新增更多地標
-                // else if (loc[0].includes("XX號")) landmarkStr = "XXX前";
-
-                const landmarkBadge = landmarkStr ? `<span class="text-xs px-2 py-0.5 rounded-md border shadow-sm ${isTop3 ? 'bg-rose-100 text-rose-700 border-rose-300' : 'bg-slate-100 text-slate-500 border-slate-300'} font-bold">${landmarkStr}</span>` : "";
+                // 📍 新增與升級：多重地標與違規障礙自動判定邏輯
+                let badges = [];
+                if (loc[0].includes("49號")) badges.push("真善美牛肉麵前");
+                if (loc[0].includes("33號")) badges.push("安居7-11前");
+                if (loc[0].includes("77號")) badges.push("豆花王");
+                if (loc[0].includes("77號") || loc[0].includes("79號")) badges.push("水泥樓梯阻礙不符合法定最小寬度90cm");
+                
+                // 將所有符合的標籤轉換為 HTML
+                const landmarkBadge = badges.map(b => `<span class="text-[11px] px-2 py-0.5 rounded-md border shadow-sm ${isTop3 ? 'bg-rose-100 text-rose-700 border-rose-300' : 'bg-slate-100 text-slate-500 border-slate-300'} font-bold whitespace-nowrap">${b}</span>`).join('');
 
                 return `
                 <div class="relative ${bgStyle} rounded-xl overflow-hidden p-4 flex flex-col gap-3 transition-all hover:scale-[1.02]">
