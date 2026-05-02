@@ -183,9 +183,9 @@
                     </h2>
                     <button onclick="editMapLink()" class="text-xs font-medium text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-1 bg-slate-700 border border-slate-600 px-2 py-1 rounded"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg> 更換資料源</button>
                 </div>
-                <div class="flex-1 w-full bg-[#1e293b] relative">
-                    <!-- 地圖濾鏡：深色模式但降低對比與飽和度，避免視覺負載過重 -->
-                    <iframe id="google-map-iframe" src="" class="w-full h-full border-0 invert-[85%] hue-rotate-180 contrast-90 saturate-50" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer"></iframe>
+                <div class="flex-1 w-full bg-slate-100 relative">
+                    <!-- 取消 CSS 濾鏡，保留 Google Maps 與照片的原始色彩 -->
+                    <iframe id="google-map-iframe" src="" class="w-full h-full border-0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer"></iframe>
                     <div id="map-placeholder" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-slate-900/90 z-10">
                         <div class="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mb-4 border border-slate-700">
                             <svg class="w-8 h-8 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
@@ -248,7 +248,7 @@
             </div>
             <div class="p-6">
                 <div class="bg-slate-800/50 border border-slate-700 rounded-lg p-4 mb-5">
-                    <p class="text-sm text-slate-400">請貼上 Google 我的地圖「共用連結」。系統將自動轉換並以深色模式嵌入。</p>
+                    <p class="text-sm text-slate-400">請貼上 Google 我的地圖「共用連結」。</p>
                 </div>
                 <div class="mb-6">
                     <input type="text" id="input-map-url" placeholder="https://www.google.com/maps/d/u/0/edit?mid=..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 focus:border-indigo-500 focus:outline-none text-sm font-mono text-slate-300">
@@ -287,7 +287,7 @@
             ]
         };
 
-        // 預設替換為您的最新 Google Maps URL (轉換為 embed 格式)
+        // 更新為使用者提供的 Google Maps 連結 (轉換為 embed 格式)
         const DEFAULT_MAP_URL = "https://www.google.com/maps/d/u/3/embed?mid=18Z9qwJ0Bl_nhC-MThGWSBGpd8Zxy7ik";
 
         window.onload = () => {
@@ -450,7 +450,7 @@
                 const textStyle = isTop3 ? 'text-rose-900 font-black text-lg flex items-center flex-wrap gap-1.5' : 'text-slate-700 font-bold text-base flex items-center flex-wrap gap-1.5';
                 const valStyle = isTop3 ? 'text-rose-700 font-black text-xl' : 'text-slate-700 font-bold text-lg';
                 
-                // 📍 新增與升級：多重地標與違規障礙自動判定邏輯
+                // 📍 多重地標與違規障礙自動判定邏輯
                 let badges = [];
                 if (loc[0].includes("49號")) badges.push("真善美牛肉麵前");
                 if (loc[0].includes("33號")) badges.push("安居7-11前");
@@ -607,6 +607,7 @@
                 closeMapModal(); return;
             }
 
+            // 自動將網址轉換為適合嵌入的模式
             if(url.includes('/edit?mid=')) url = url.replace('/edit?mid=', '/embed?mid=');
             else if(url.includes('/viewer?mid=')) url = url.replace('/viewer?mid=', '/embed?mid=');
             
