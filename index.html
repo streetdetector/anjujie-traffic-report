@@ -79,7 +79,7 @@
                 <svg class="w-12 h-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
             </div>
             <h2 class="text-3xl font-black text-slate-800 mb-3">等待載入數據</h2>
-            <p class="text-slate-500 mb-8 max-w-md mx-auto text-lg font-medium">資料庫已就緒。如果您尚未設定內建數據，請點擊右上方載入系統產製的 JSON 數據檔以顯示視覺化分析。</p>
+            <p class="text-slate-500 mb-8 max-w-md mx-auto text-lg font-medium">系統找不到 data.json，資料庫等待就緒。請點擊右上方載入系統產製的 JSON 數據檔以顯示視覺化分析。</p>
         </div>
     </div>
 
@@ -324,7 +324,9 @@
         window.onload = () => {
             const savedMapUrl = localStorage.getItem('public_dashboard_map_url') || DEFAULT_MAP_URL;
             if (savedMapUrl) applyMapIframe(savedMapUrl);
-            loadEmbeddedData();
+
+            // 嘗試抓取外部的 data.json，失敗則退回內建數據
+            fetchExternalData();
 
             // 🌟 點擊非圖表區塊時，自動清除樣態過濾
             document.addEventListener('click', (e) => {
@@ -343,9 +345,31 @@
             });
         };
 
+        async function fetchExternalData() {
+            try {
+                // 加入時間戳記避免 GitHub Pages 快取
+                const response = await fetch('./data.json?t=' + new Date().getTime(), { cache: "no-store" });
+                if (!response.ok) throw new Error("無外部檔案");
+                const parsed = await response.json();
+                if (!parsed || !parsed.data) throw new Error("格式錯誤");
+                
+                rawEvidenceData = parsed.data;
+                projectInfo = parsed.settings || {};
+                
+                renderHeader();
+                applyFilters();
+            } catch (err) {
+                console.warn("無法載入 data.json，退回使用內建展示數據", err);
+                loadEmbeddedData();
+            }
+        }
+
         function loadEmbeddedData() {
             try {
-                if (!EMBEDDED_JSON_DATA || !EMBEDDED_JSON_DATA.data) return;
+                if (!EMBEDDED_JSON_DATA || !EMBEDDED_JSON_DATA.data) {
+                    showEl('empty-state');
+                    return;
+                }
                 rawEvidenceData = EMBEDDED_JSON_DATA.data;
                 projectInfo = EMBEDDED_JSON_DATA.settings || {};
                 renderHeader();
@@ -570,7 +594,7 @@
                 if (loc[0].includes("30號")) badges.push("丐幫滷味人行道外推處");
                 if (loc[0].includes("15號")) badges.push("鮮綠果菜專賣店前");
                 if (loc[0].includes("40號")) badges.push("協力香雞排前");
-                if (loc[0].includes("46巷1號")) badges.push("鬍鬚張行人穿越道處"); // 🌟 更新地標
+                if (loc[0].includes("46巷1號")) badges.push("鬍鬚張行人穿越道處"); 
                 
                 const landmarkBadge = badges.map(b => `<span class="text-[11px] px-2 py-0.5 rounded-md border shadow-sm ${isTop3 ? 'bg-rose-100 text-rose-700 border-rose-300' : 'bg-slate-100 text-slate-500 border-slate-300'} font-bold whitespace-nowrap">${b}</span>`).join('');
 
