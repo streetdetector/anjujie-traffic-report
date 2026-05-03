@@ -15,43 +15,54 @@
         
         body { 
             font-family: 'Noto Sans TC', sans-serif; 
-            background-color: #0f172a; /* 深色背景 */
-            color: #cbd5e1; 
+            background-color: #f8fafc; 
+            color: #334155; 
         }
         
         .font-mono { font-family: 'JetBrains Mono', monospace; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* 靜態深色卡片，無複雜陰影與動畫，降低渲染負載 */
+        /* 靜態明亮卡片，強化陰影與邊框對比 */
         .dashboard-card { 
-            background: #1e293b; 
-            border: 1px solid #334155; 
+            background: #ffffff; 
+            border: 1px solid #cbd5e1; 
             border-radius: 1rem; 
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.025);
+            position: relative;
         }
+        
+        /* 靜態色彩強調 (高對比) */
+        .color-text-rose { color: #be123c; } /* Rose-700 */
+        .color-text-cyan { color: #0369a1; } /* Sky-700 */
+        .color-text-amber { color: #b45309; } /* Amber-700 */
+        
+        .highlight-mark { background: #ffe4e6; color: #be123c; padding: 2px 8px; border-radius: 6px; border: 2px solid #fda4af; font-weight: 900; }
+        
+        /* 過濾器按鈕過渡動畫 */
+        .filter-btn { transition: all 0.2s ease-in-out; }
     </style>
 </head>
-<body class="antialiased min-h-screen pb-24 selection:bg-indigo-500/30 selection:text-indigo-200">
+<body class="antialiased min-h-screen pb-24 selection:bg-rose-200 selection:text-rose-900">
 
     <!-- 頂部導覽列 -->
-    <nav class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
+    <nav class="bg-white border-b-2 border-slate-200 sticky top-0 z-50 shadow-sm">
         <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-[72px]">
                 <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 bg-slate-800 text-slate-300 rounded-lg flex items-center justify-center border border-slate-700">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002-2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    <div class="w-12 h-12 bg-slate-900 text-white rounded-xl flex items-center justify-center shadow-md">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002-2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                     </div>
                     <div>
-                        <h1 class="font-bold text-xl text-slate-100 tracking-tight flex items-center gap-3" id="header-title">
+                        <h1 class="font-black text-2xl text-slate-900 tracking-tight flex items-center gap-3" id="header-title">
                             市政交通違規觀測儀表板
-                            <span class="px-2 py-0.5 rounded text-xs bg-slate-800 text-slate-400 border border-slate-700">開放資料平台</span>
+                            <span class="px-2.5 py-1 rounded-md text-xs bg-indigo-100 text-indigo-800 border border-indigo-200 font-bold uppercase tracking-wider hidden sm:inline-block">Open Data 數據公開平台</span>
                         </h1>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
-                    <label class="cursor-pointer bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-slate-600 flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                    <label class="cursor-pointer bg-white hover:bg-slate-50 text-slate-700 px-5 py-2.5 rounded-xl text-sm font-black transition-colors border-2 border-slate-300 shadow-sm flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                         <span class="hidden sm:inline">手動載入數據 (.json)</span>
                         <span class="sm:hidden">載入</span>
                         <input type="file" class="hidden" accept=".json" onchange="importData(event)">
@@ -62,176 +73,187 @@
     </nav>
 
     <!-- 系統無資料時的佔位提示 -->
-    <div id="empty-state" class="max-w-3xl mx-auto px-4 mt-24 text-center">
-        <div class="dashboard-card p-16">
-            <div class="w-20 h-20 bg-slate-800 border border-slate-700 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg class="w-10 h-10 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+    <div id="empty-state" class="max-w-3xl mx-auto px-4 mt-24 text-center hidden">
+        <div class="dashboard-card p-16 border-dashed border-2">
+            <div class="w-24 h-24 bg-slate-100 border-2 border-slate-200 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-12 h-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
             </div>
-            <h2 class="text-2xl font-bold text-slate-200 mb-3" id="empty-title">正在讀取雲端數據...</h2>
-            <p class="text-slate-400 mb-8 max-w-md mx-auto text-base">系統正在嘗試從伺服器取得 data.json。如果長時間未顯示，請確認檔案是否已正確上傳至同一個目錄。</p>
+            <h2 class="text-3xl font-black text-slate-800 mb-3">等待載入數據</h2>
+            <p class="text-slate-500 mb-8 max-w-md mx-auto text-lg font-medium">資料庫已就緒。如果您尚未設定內建數據，請點擊右上方載入系統產製的 JSON 數據檔以顯示視覺化分析。</p>
         </div>
     </div>
 
     <!-- 數據儀表板 -->
-    <div id="dashboard-content" class="hidden max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-8 space-y-8">
+    <div id="dashboard-content" class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-10 space-y-10">
         
         <!-- 報告大綱與時間 -->
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-slate-800 pb-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end border-b-4 border-slate-900 pb-5">
             <div>
-                <p class="text-slate-500 font-bold tracking-widest text-sm mb-1 uppercase" id="header-subtitle">OBSERVATION REPORT</p>
-                <h2 class="text-3xl font-black text-slate-100 leading-tight">安居街周邊 交通違規與行人路權分析報告</h2>
+                <p class="text-slate-500 font-black tracking-widest text-sm mb-2 uppercase" id="header-subtitle">CIVIC EVIDENCE REPORT</p>
+                <h2 class="text-4xl font-black text-slate-900 leading-tight">安居街周邊 <span class="text-rose-700 bg-rose-100 px-2 py-1 rounded-lg border border-rose-200 shadow-sm mx-1">行人路權受阻</span> 實證分析報告</h2>
             </div>
-            <div class="mt-4 md:mt-0 flex items-center gap-3 bg-slate-800 border border-slate-700 px-4 py-2 rounded-lg text-sm">
-                <span class="text-slate-400">觀測時間區段：<span id="metric-date-range" class="text-slate-200 font-mono ml-1">--</span></span>
+            <div class="mt-4 md:mt-0 flex items-center gap-3 bg-white border-2 border-slate-200 px-5 py-2.5 rounded-xl shadow-sm">
+                <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                <span class="text-slate-600 font-bold text-base">觀測時間區段：<span id="metric-date-range" class="text-slate-900 font-black ml-1">--</span></span>
             </div>
         </div>
 
-        <!-- 客觀分析摘要 -->
-        <div class="dashboard-card p-8 border border-slate-700 bg-slate-800/50">
-            <h3 class="text-2xl font-black text-slate-100 mb-6 flex items-center gap-3 border-b border-slate-700 pb-4">
-                <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                觀測數據摘要與改善建議
+        <!-- 🌟 交叉過濾器控制列 -->
+        <div class="flex flex-wrap items-center gap-3 bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+            <span class="text-sm font-black text-slate-500 flex items-center gap-1.5 ml-2">
+                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
+                快速分析過濾：
+            </span>
+            <div class="flex gap-2">
+                <button id="btn-filter-all" onclick="setTimeFilter('all')" class="filter-btn px-4 py-1.5 text-sm font-bold rounded-lg border-2 border-slate-900 bg-slate-900 text-white shadow-sm">全部時間</button>
+                <button id="btn-filter-7days" onclick="setTimeFilter('7days')" class="filter-btn px-4 py-1.5 text-sm font-bold rounded-lg border-2 border-slate-200 bg-white text-slate-600 hover:border-slate-300">近 7 天</button>
+                <button id="btn-filter-weekday" onclick="setTimeFilter('weekday')" class="filter-btn px-4 py-1.5 text-sm font-bold rounded-lg border-2 border-slate-200 bg-white text-slate-600 hover:border-slate-300">平日</button>
+                <button id="btn-filter-weekend" onclick="setTimeFilter('weekend')" class="filter-btn px-4 py-1.5 text-sm font-bold rounded-lg border-2 border-slate-200 bg-white text-slate-600 hover:border-slate-300">週末</button>
+            </div>
+            
+            <div id="active-type-filter-container" class="hidden ml-auto flex items-center gap-2 bg-indigo-50 border-2 border-indigo-200 pl-3 pr-1 py-1 rounded-lg shadow-sm">
+                <span class="text-sm font-bold text-indigo-800">樣態鎖定：<span id="active-type-name" class="font-black text-indigo-600 underline underline-offset-2">--</span></span>
+                <button onclick="clearTypeFilter()" class="p-1 text-indigo-400 hover:text-indigo-600 hover:bg-indigo-100 rounded-md transition-colors" title="清除樣態過濾">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 強而有力的證詞 (AI Insight) 置於最上方，字體極度放大 -->
+        <div class="dashboard-card p-8 md:p-10 border-2 border-slate-800 shadow-xl bg-white">
+            <h3 class="text-3xl font-black text-slate-900 mb-8 flex items-center gap-4 border-b-2 border-slate-200 pb-5">
+                <div class="p-3 bg-slate-900 text-white rounded-lg"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path></svg></div>
+                市政安全警示與強烈訴求
             </h3>
-            <div class="space-y-6 text-slate-300 text-base leading-relaxed" id="ai-insight-text">
+            <div class="space-y-6" id="ai-insight-text">
                 載入中...
             </div>
         </div>
 
-        <!-- 核心指標數據 (Key Metrics) -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- 核心指標數據 (Key Metrics) 高對比放大版 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             
-            <!-- 指標 1 -->
-            <div class="dashboard-card p-6 flex flex-col justify-between border-t-4 border-t-sky-500 bg-slate-800/20">
+            <!-- 指標 1: 實證數量與推估 -->
+            <div class="dashboard-card p-8 flex flex-col justify-between border-t-8 border-t-sky-600 bg-sky-50/30">
                 <div class="flex justify-between items-start mb-6">
-                    <p class="text-base font-bold text-slate-300">本期實證總數</p>
-                    <svg class="w-6 h-6 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <p class="text-lg font-black text-sky-800">本期採證總數 <span class="bg-sky-100 text-sky-700 px-2 py-1 rounded text-xs ml-2 border border-sky-200 uppercase tracking-widest">實體觀測</span></p>
+                    <svg class="w-8 h-8 text-sky-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                 </div>
-                <div class="flex items-baseline gap-2 mb-4">
-                    <h3 class="text-5xl font-black text-sky-400 font-mono tracking-tight" id="metric-total">0</h3>
-                    <span class="text-lg text-slate-400 font-medium">件</span>
+                <div class="flex items-baseline gap-2 mb-6">
+                    <h3 class="text-7xl font-black text-sky-700 font-mono tracking-tighter" id="metric-total">0</h3>
+                    <span class="text-2xl text-sky-600 font-bold">件</span>
                 </div>
-                <div class="w-full bg-slate-900/80 rounded-lg p-3 border border-slate-700 space-y-2">
-                    <p class="text-sm text-slate-400 flex justify-between items-center"><span>觀測日均件數</span> <strong class="text-slate-200 font-mono" id="metric-daily-avg-small">0</strong></p>
-                    <p class="text-sm text-slate-400 flex justify-between items-center"><span>觀測時均件數</span> <strong class="text-slate-200 font-mono" id="metric-hourly-avg-small">0</strong></p>
-                    <div class="h-px w-full bg-slate-800"></div>
-                    <p class="text-sm text-slate-400 flex justify-between items-center">
-                        <span>推估月均總數</span> 
-                        <strong class="text-rose-400 font-mono" id="metric-estimated-monthly">0</strong>
-                    </p>
-                    <p class="text-sm text-slate-400 flex justify-between items-center">
-                        <span>推估時均件數</span> 
-                        <strong class="text-rose-400 font-mono" id="metric-estimated-hourly">0</strong>
+                <div class="w-full bg-white rounded-xl p-4 border-2 border-sky-100 shadow-sm">
+                    <p class="text-sm text-slate-600 flex justify-between items-center mb-3 font-bold"><span>觀測日均件數</span> <strong class="text-sky-700 font-mono text-xl" id="metric-daily-avg-small">0</strong></p>
+                    <div class="h-px w-full bg-sky-100 mb-3"></div>
+                    <p class="text-sm text-slate-600 flex justify-between items-center font-bold">
+                        <span class="flex items-center gap-1">模型推估全日黑數</span> 
+                        <strong class="text-rose-600 font-mono text-xl bg-rose-50 px-2 py-0.5 rounded border border-rose-100" id="metric-estimated-daily">0 / 日</strong>
                     </p>
                 </div>
             </div>
 
-            <!-- 指標 2 -->
-            <div class="dashboard-card p-6 flex flex-col justify-between border-t-4 border-t-rose-500 bg-slate-800/20">
-                <div class="flex justify-between items-start mb-6">
-                    <p class="text-base font-bold text-slate-300">行人動線受阻</p>
-                    <svg class="w-6 h-6 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                </div>
-                <div class="flex items-baseline gap-2 mb-4">
-                    <h3 class="text-5xl font-black text-rose-500 font-mono tracking-tight" id="metric-pedestrian">0</h3>
-                    <span class="text-lg text-slate-400 font-medium">件</span>
-                </div>
-                <div class="w-full bg-slate-900/80 p-3 rounded-lg border border-slate-700">
-                    <p class="text-xs text-slate-400 leading-relaxed mb-3">
-                        統計包含佔用人行道、無障礙坡道及行人穿越道之車輛，實質影響行人與無障礙通行權益。
-                    </p>
-                    <div class="border-t border-slate-700 pt-3">
-                        <p class="text-rose-400 font-bold mb-2 text-xs">整體違規行為 Top 3：</p>
-                        <div id="top-violation-types" class="space-y-1.5">
-                            <!-- JS 動態生成 -->
-                        </div>
+            <!-- 指標 2: 行人動線受阻 (極度強調) -->
+            <div class="dashboard-card p-8 flex flex-col justify-between border-t-8 border-t-rose-600 bg-rose-50 border-2 border-rose-200 shadow-[0_8px_30px_rgb(225,29,72,0.1)]">
+                <div class="flex justify-between items-start mb-6 relative z-10">
+                    <div class="flex items-center gap-3">
+                        <div class="w-3 h-3 bg-rose-600 rounded-full shadow-[0_0_10px_rgba(225,29,72,0.8)]"></div>
+                        <p class="text-xl font-black text-rose-800 tracking-wider">行人動線遭截斷</p>
                     </div>
+                    <svg class="w-8 h-8 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                 </div>
+                <div class="flex items-baseline gap-2 mb-6 relative z-10">
+                    <h3 class="text-7xl font-black text-rose-700 font-mono tracking-tighter" id="metric-pedestrian">0</h3>
+                    <span class="text-2xl text-rose-600 font-bold">件實證</span>
+                </div>
+                <p class="text-base text-rose-900 font-bold leading-relaxed bg-white p-4 rounded-xl border-2 border-rose-200 relative z-10 shadow-sm">
+                    包含車輛佔用人行道、無障礙坡道及行人穿越道。此舉直接將輪椅族與嬰兒車逼向車道，屬<strong class="text-rose-700 text-lg mx-1">最高危險等級</strong>。
+                </p>
             </div>
 
-            <!-- 指標 3 -->
-            <div class="dashboard-card p-6 flex flex-col justify-between border-t-4 border-t-amber-500 bg-slate-800/20">
+            <!-- 指標 3: 觀測最高峰時段 -->
+            <div class="dashboard-card p-8 flex flex-col justify-between border-t-8 border-t-amber-500 bg-amber-50/50">
                 <div class="flex justify-between items-start mb-6">
-                    <p class="text-base font-bold text-slate-300">觀測高峰時段</p>
-                    <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <p class="text-lg font-black text-amber-800">觀測最高峰時段 <span class="bg-amber-100 text-amber-700 px-2 py-1 rounded text-xs ml-2 border border-amber-200 uppercase">PEAK HOURS</span></p>
+                    <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
-                <div class="flex items-baseline gap-2 mb-4">
-                    <h3 class="text-5xl font-black text-amber-400 font-mono tracking-tight" id="metric-peak-time">--:--</h3>
+                <div class="flex items-baseline gap-2 mb-6">
+                    <h3 class="text-7xl font-black text-amber-600 font-mono tracking-tighter" id="metric-peak-time">--:--</h3>
                 </div>
-                <div class="w-full bg-slate-900/80 p-3 rounded-lg border border-slate-700">
-                    <p class="text-xs text-slate-400 leading-relaxed mb-3">
-                        記錄區間內違規最為密集之小時區段，該單一時段內共觀測得 <strong class="text-amber-400 font-mono text-sm" id="metric-peak-count">0</strong> 件違規。
-                    </p>
-                    <div class="border-t border-slate-700 pt-3">
-                        <p class="text-amber-400 font-bold mb-2 text-xs">高風險時段 Top 3：</p>
-                        <div id="top-peak-hours" class="space-y-1.5">
-                            <!-- JS 動態生成 -->
-                        </div>
-                    </div>
-                </div>
+                <p class="text-base text-amber-900 font-bold leading-relaxed bg-white p-4 rounded-xl border-2 border-amber-200 shadow-sm">
+                    單一小時內最密集發生區間，該時段內共記錄高達 <strong class="text-amber-700 text-xl font-black bg-amber-100 px-2 py-0.5 rounded mx-1" id="metric-peak-count">0</strong> 件違規，秩序近乎癱瘓。
+                </p>
             </div>
         </div>
 
         <!-- 空間與地理分析 (Maps & Hotspots) -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
             <!-- Google 地圖 (跨 2 欄) -->
-            <div class="lg:col-span-2 dashboard-card overflow-hidden flex flex-col h-[500px]">
-                <div class="px-6 py-4 border-b border-slate-700 bg-slate-800/80 flex justify-between items-center z-20">
-                    <h2 class="font-bold text-base text-slate-200 flex items-center gap-2">
-                        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
-                        違規空間分佈地圖
+            <div class="lg:col-span-2 dashboard-card overflow-hidden flex flex-col h-[650px] border-2 border-slate-300 shadow-lg relative">
+                <div class="px-8 py-5 border-b-2 border-slate-200 bg-slate-50 flex justify-between items-center z-20">
+                    <h2 class="font-black text-xl text-slate-800 flex items-center gap-3 tracking-wider">
+                        <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
+                        違規空間分佈地圖 (可互動)
                     </h2>
-                    <button onclick="editMapLink()" class="text-xs font-medium text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-1 bg-slate-700 border border-slate-600 px-2 py-1 rounded"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg> 更換資料源</button>
+                    <button onclick="editMapLink()" class="text-sm font-bold text-slate-500 hover:text-indigo-600 transition-colors flex items-center gap-1 bg-white border border-slate-300 px-3 py-1.5 rounded-lg shadow-sm"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg> 更換資料源</button>
+                </div>
+                <!-- 提示：Google Maps 嵌入無法即時跟隨前端過濾器改變 -->
+                <div class="absolute top-[80px] right-4 z-20 bg-white/90 backdrop-blur text-slate-600 text-[10px] font-bold px-2 py-1 rounded shadow border border-slate-200 pointer-events-none">
+                    ⚠️ 地圖顯示全量歷史圖資，不隨條件過濾。
                 </div>
                 <div class="flex-1 w-full bg-slate-100 relative">
-                    <!-- 取消 CSS 濾鏡，保留 Google Maps 與照片的原始色彩 -->
                     <iframe id="google-map-iframe" src="" class="w-full h-full border-0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer"></iframe>
-                    <div id="map-placeholder" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-slate-900/90 z-10">
-                        <div class="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mb-4 border border-slate-700">
-                            <svg class="w-8 h-8 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+                    <div id="map-placeholder" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-white/90 z-10 backdrop-blur-sm">
+                        <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-4 border-2 border-slate-300 shadow-inner">
+                            <svg class="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
                         </div>
-                        <p class="text-slate-300 font-bold mb-2 text-lg">尚未設定互動地圖</p>
-                        <p class="text-sm text-slate-500 mb-6 text-center max-w-sm">請點擊上方按鈕貼上您的 Google My Maps 共用連結以顯示地圖。</p>
+                        <p class="text-slate-800 font-black mb-2 text-2xl">尚未設定互動地圖</p>
+                        <p class="text-base text-slate-500 mb-6 text-center max-w-sm font-medium">請點擊上方按鈕貼上您的 Google My Maps 共用連結以顯示地圖。</p>
                     </div>
                 </div>
             </div>
 
             <!-- 熱門路段排行榜 -->
-            <div class="dashboard-card flex flex-col h-[500px]">
-                <div class="px-6 py-4 border-b border-slate-700 bg-slate-800/80">
-                    <h2 class="font-bold text-base text-slate-200 flex items-center gap-2">
-                        <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-                        高頻發生路段 (Top 10)
+            <div class="dashboard-card flex flex-col h-[650px] border-2 border-slate-300 shadow-lg bg-white">
+                <div class="px-8 py-5 border-b-2 border-slate-200 bg-slate-50">
+                    <h2 class="font-black text-xl text-slate-800 flex items-center gap-3 tracking-wider">
+                        <svg class="w-6 h-6 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                        熱門違規路段 (Top 10)
                     </h2>
                 </div>
-                <div class="flex-1 overflow-y-auto p-5 space-y-3 hide-scrollbar" id="hotspot-list">
+                <div class="flex-1 overflow-y-auto p-6 space-y-4 hide-scrollbar" id="hotspot-list">
                     <!-- JS 動態生成 -->
                 </div>
             </div>
         </div>
 
         <!-- 圖表分析區 -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pb-12">
             <!-- 24H 時間分佈圖 -->
-            <div class="dashboard-card p-6">
-                <h2 class="font-bold text-base text-slate-200 mb-1 flex items-center gap-2">
-                    <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    各時段發生頻率分佈
+            <div class="dashboard-card p-8 border-2 border-slate-300 shadow-lg bg-white">
+                <h2 class="font-black text-2xl text-slate-900 mb-2 flex items-center gap-3">
+                    <svg class="w-7 h-7 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    24H 違規發生時段分佈
                 </h2>
-                <p class="text-sm text-slate-500 mb-6">呈現觀測區間內之時間分佈趨勢</p>
-                <div class="w-full h-[280px] relative">
+                <p class="text-sm text-slate-500 mb-8 font-bold" id="chart-peak-hour-text">各時段違規件數統計</p>
+                <div class="w-full h-[350px] relative">
                     <canvas id="timeChart"></canvas>
                 </div>
             </div>
 
             <!-- 違規樣態圓餅圖 -->
-            <div class="dashboard-card p-6">
-                <h2 class="font-bold text-base text-slate-200 mb-1 flex items-center gap-2">
-                    <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
-                    違規行為樣態佔比
+            <!-- 🌟 賦予專屬 ID 以利點擊外部清除過濾器判斷 -->
+            <div id="type-chart-card" class="dashboard-card p-8 border-2 border-slate-300 shadow-lg bg-white group relative">
+                <div class="absolute top-8 right-8 text-[10px] font-bold text-indigo-500 bg-indigo-50 px-2 py-1 rounded border border-indigo-100 hidden group-hover:block transition-opacity animate-pulse pointer-events-none">
+                    💡 點擊圖表區塊可聯動過濾全站數據
+                </div>
+                <h2 class="font-black text-2xl text-slate-900 mb-2 flex items-center gap-3 cursor-pointer" title="點擊圖表區塊可過濾數據">
+                    <svg class="w-7 h-7 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
+                    違規樣態佔比分析
                 </h2>
-                <p class="text-sm text-slate-500 mb-6">各項交通違規類型之組成結構</p>
-                <div class="w-full h-[280px] relative flex justify-center">
+                <p class="text-sm text-slate-500 mb-8 font-bold">點擊特定樣態可快速篩選相關數據</p>
+                <div class="w-full h-[350px] relative flex justify-center cursor-pointer">
                     <canvas id="typeChart"></canvas>
                 </div>
             </div>
@@ -240,22 +262,23 @@
     </div>
 
     <!-- 地圖連結設定 Modal -->
-    <div id="map-modal" class="fixed inset-0 z-[2000] bg-slate-900/80 hidden flex-col items-center justify-center p-4">
-        <div class="dashboard-card max-w-lg w-full overflow-hidden border-slate-700" id="map-modal-content">
-            <div class="px-6 py-5 flex justify-between items-center border-b border-slate-700 bg-slate-800">
-                <h3 class="font-bold text-lg text-slate-200">設定 Google 地圖連結</h3>
-                <button onclick="closeMapModal()" class="text-slate-500 hover:text-slate-300 transition-colors p-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+    <div id="map-modal" class="fixed inset-0 z-[2000] bg-slate-900/60 backdrop-blur-sm hidden flex-col items-center justify-center p-4">
+        <div class="dashboard-card max-w-lg w-full overflow-hidden border-2 border-slate-300 shadow-2xl" id="map-modal-content">
+            <div class="px-6 py-5 flex justify-between items-center border-b-2 border-slate-200 bg-slate-50">
+                <h3 class="font-black text-xl text-slate-800 flex items-center gap-2">綁定 Google 地圖資料庫</h3>
+                <button onclick="closeMapModal()" class="text-slate-400 hover:text-slate-800 transition-colors p-1"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg></button>
             </div>
-            <div class="p-6">
-                <div class="bg-slate-800/50 border border-slate-700 rounded-lg p-4 mb-5">
-                    <p class="text-sm text-slate-400">請貼上 Google 我的地圖「共用連結」。</p>
+            <div class="p-8">
+                <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-5 mb-6 shadow-sm">
+                    <p class="text-base text-indigo-800 leading-relaxed font-bold">請將您從 Google 我的地圖中複製的<strong>「共用連結」</strong>貼在下方。</p>
                 </div>
-                <div class="mb-6">
-                    <input type="text" id="input-map-url" placeholder="https://www.google.com/maps/d/u/0/edit?mid=..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 focus:border-indigo-500 focus:outline-none text-sm font-mono text-slate-300">
+                <div class="mb-8">
+                    <label class="block text-sm font-black text-slate-700 mb-3">連結 URL</label>
+                    <input type="text" id="input-map-url" placeholder="https://www.google.com/maps/d/u/0/edit?mid=..." class="w-full bg-white border-2 border-slate-300 rounded-xl p-4 focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 text-base outline-none font-mono text-slate-800 transition-all">
                 </div>
-                <div class="flex justify-end gap-3 mt-4 pt-4 border-t border-slate-800">
-                    <button onclick="closeMapModal()" class="px-5 py-2 text-sm font-medium text-slate-400 hover:text-slate-200 transition-colors">取消</button>
-                    <button onclick="saveMapLink()" class="px-6 py-2 text-sm font-bold bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg transition-colors">儲存設定</button>
+                <div class="flex justify-end gap-3 mt-4 pt-6 border-t-2 border-slate-100">
+                    <button onclick="closeMapModal()" class="px-6 py-3 text-base font-bold text-slate-600 hover:bg-slate-100 rounded-xl transition-colors border-2 border-transparent hover:border-slate-200">取消</button>
+                    <button onclick="saveMapLink()" class="px-8 py-3 text-base font-black bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow-md transition-colors">儲存並套用</button>
                 </div>
             </div>
         </div>
@@ -266,54 +289,68 @@
         const showEl = (id) => { const el = $el(id); if (el) el.classList.remove('hidden'); };
         const hideEl = (id) => { const el = $el(id); if (el) el.classList.add('hidden'); };
         
-        let evidenceData = [];
+        // 核心狀態管理
+        let rawEvidenceData = []; 
+        let evidenceData = []; 
         let projectInfo = {};
         let charts = {}; 
 
+        // 過濾器狀態
+        let activeTimeFilter = 'all'; 
+        let activeTypeFilter = null; 
+
         // ==========================================
-        // 📥 內建展示數據 (可由 data.json 覆蓋)
+        // 📥 內建展示數據
         // ==========================================
         const EMBEDDED_JSON_DATA = {
             "version": "16.0",
             "exportDate": "2026-04-30T12:00:00.000Z",
             "settings": {
                 "title": "安居街周邊專案採證報告",
-                "investigator": "交通觀測平台"
+                "investigator": "在地居民與通行權關注組"
             },
             "data": [
-                { "id": "demo1", "datetime": "2026.04.28 11:30", "location": "台北市大安區安居街4號", "plate": "ABC-1234", "type": "佔用人行道", "severity": 3 },
+                { "id": "demo1", "datetime": "2026.04.28 11:30", "location": "台北市大安區安居街4號", "plate": "ABC-1234", "type": "汽車佔用人行道", "severity": 3 },
                 { "id": "demo2", "datetime": "2026.04.28 12:15", "location": "台北市大安區安居街路口", "plate": "DEF-5678", "type": "並排停車", "severity": 3 },
-                { "id": "demo3", "datetime": "2026.04.28 18:45", "location": "台北市大安區安居街8號", "plate": "GHI-9012", "type": "紅線違停", "severity": 2 }
+                { "id": "demo3", "datetime": "2026.04.25 18:45", "location": "台北市大安區安居街8號", "plate": "GHI-9012", "type": "紅線違停", "severity": 2 },
+                { "id": "demo4", "datetime": "2026.04.29 08:30", "location": "台北市大安區安居街33號", "plate": "JKL-3456", "type": "機車佔用人行道", "severity": 3 },
+                { "id": "demo5", "datetime": "2026.04.26 14:20", "location": "台北市大安區安居街77號", "plate": "MNO-7890", "type": "汽車佔用人行道", "severity": 3 },
+                { "id": "demo6", "datetime": "2026.04.26 15:10", "location": "台北市大安區安居街46巷1號", "plate": "XYZ-9999", "type": "汽車違停", "severity": 2 }
             ]
         };
 
-        // 更新為使用者提供的 Google Maps 連結 (轉換為 embed 格式)
-        const DEFAULT_MAP_URL = "https://www.google.com/maps/d/u/3/embed?mid=18Z9qwJ0Bl_nhC-MThGWSBGpd8Zxy7ik";
+        const DEFAULT_MAP_URL = "https://www.google.com/maps/d/u/0/embed?mid=1JhYYDbVfjTKqDtZapAF8d4xrDW00iBI";
 
         window.onload = () => {
             const savedMapUrl = localStorage.getItem('public_dashboard_map_url') || DEFAULT_MAP_URL;
             if (savedMapUrl) applyMapIframe(savedMapUrl);
-            
-            // 嘗試載入外部的 data.json
-            fetchExternalData();
+            loadEmbeddedData();
+
+            // 🌟 點擊非圖表區塊時，自動清除樣態過濾
+            document.addEventListener('click', (e) => {
+                if (activeTypeFilter !== null) {
+                    const isClickInsideChart = e.target.closest('#type-chart-card');
+                    const isClickInsideFilterBadge = e.target.closest('#active-type-filter-container');
+                    const isClickOnTimeFilter = e.target.closest('.filter-btn');
+                    const isClickOnMapModal = e.target.closest('#map-modal');
+                    const isClickOnImport = e.target.closest('input[type="file"]') || e.target.closest('label');
+
+                    // 若點擊的位置不在圖表卡片內，也不在任何過濾按鈕或載入按鈕上，則清除過濾器
+                    if (!isClickInsideChart && !isClickInsideFilterBadge && !isClickOnTimeFilter && !isClickOnMapModal && !isClickOnImport) {
+                        clearTypeFilter();
+                    }
+                }
+            });
         };
 
-        async function fetchExternalData() {
+        function loadEmbeddedData() {
             try {
-                const response = await fetch('./data.json', { cache: "no-store" });
-                if (!response.ok) throw new Error("無檔案");
-                const parsed = await response.json();
-                if (!parsed || !parsed.data) throw new Error("格式錯誤");
-                
-                evidenceData = parsed.data;
-                projectInfo = parsed.settings || {};
-                
+                if (!EMBEDDED_JSON_DATA || !EMBEDDED_JSON_DATA.data) return;
+                rawEvidenceData = EMBEDDED_JSON_DATA.data;
+                projectInfo = EMBEDDED_JSON_DATA.settings || {};
                 renderHeader();
-                processAndRenderData();
-            } catch (err) {
-                // 若遠端無檔案，顯示錯誤並退回等待載入狀態，使用者也可手動上傳
-                showEl('empty-state');
-            }
+                applyFilters(); 
+            } catch (err) { console.error(err); }
         }
 
         function importData(event) {
@@ -323,11 +360,15 @@
             reader.onload = function(e) {
                 try {
                     const parsed = JSON.parse(e.target.result); 
-                    if (!parsed.data) throw new Error("格式錯誤");
-                    evidenceData = parsed.data;
+                    if (!parsed.data) throw new Error("無效的資料格式");
+                    rawEvidenceData = parsed.data;
                     projectInfo = parsed.settings || {};
+                    activeTimeFilter = 'all';
+                    activeTypeFilter = null;
+                    updateFilterUI();
+                    
                     renderHeader();
-                    processAndRenderData();
+                    applyFilters();
                 } catch (err) { 
                     alert("無法載入檔案，請確認是否為正確 json 格式。");
                 }
@@ -340,18 +381,104 @@
             hideEl('empty-state');
             showEl('dashboard-content');
             if (projectInfo.title) {
-                $el('header-title').innerHTML = `${projectInfo.title} <span class="px-2 py-0.5 rounded text-xs bg-slate-800 text-slate-400 border border-slate-700 ml-2">開放資料平台</span>`;
+                $el('header-title').innerHTML = `${projectInfo.title} <span class="px-2.5 py-1 rounded-md text-xs bg-indigo-100 text-indigo-800 border border-indigo-200 font-bold uppercase tracking-wider ml-2 hidden sm:inline-block">Open Data 數據公開平台</span>`;
             }
         }
 
-        function processAndRenderData() {
-            if (!evidenceData || evidenceData.length === 0) return;
+        // ==========================================
+        // 🔄 智能過濾器邏輯
+        // ==========================================
+        function setTimeFilter(filterType) {
+            activeTimeFilter = filterType;
+            updateFilterUI();
+            applyFilters();
+        }
 
-            // 1. 總數
+        function setTypeFilter(typeStr) {
+            activeTypeFilter = typeStr;
+            updateFilterUI();
+            applyFilters();
+        }
+
+        function clearTypeFilter() {
+            activeTypeFilter = null;
+            updateFilterUI();
+            applyFilters();
+        }
+
+        function updateFilterUI() {
+            ['all', '7days', 'weekday', 'weekend'].forEach(f => {
+                const btn = $el(`btn-filter-${f}`);
+                if (!btn) return;
+                if (f === activeTimeFilter) {
+                    btn.className = "filter-btn px-4 py-1.5 text-sm font-bold rounded-lg border-2 border-slate-900 bg-slate-900 text-white shadow-sm";
+                } else {
+                    btn.className = "filter-btn px-4 py-1.5 text-sm font-bold rounded-lg border-2 border-slate-200 bg-white text-slate-600 hover:border-slate-300";
+                }
+            });
+
+            if (activeTypeFilter) {
+                $el('active-type-name').innerText = activeTypeFilter;
+                showEl('active-type-filter-container');
+            } else {
+                hideEl('active-type-filter-container');
+            }
+        }
+
+        function applyFilters() {
+            let maxTime = 0;
+            rawEvidenceData.forEach(i => {
+                if(i.datetime) {
+                    const t = new Date(i.datetime.replace(/\./g, '-')).getTime();
+                    if (t > maxTime) maxTime = t;
+                }
+            });
+            const sevenDaysAgo = maxTime - (7 * 24 * 60 * 60 * 1000);
+
+            evidenceData = rawEvidenceData.filter(item => {
+                if (activeTypeFilter && item.type !== activeTypeFilter) return false;
+
+                if (activeTimeFilter !== 'all') {
+                    if (!item.datetime) return false;
+                    const d = new Date(item.datetime.replace(/\./g, '-'));
+                    const dTime = d.getTime();
+                    const dayOfWeek = d.getDay();
+
+                    if (activeTimeFilter === '7days') {
+                        if (dTime < sevenDaysAgo) return false;
+                    } else if (activeTimeFilter === 'weekday') {
+                        if (dayOfWeek === 0 || dayOfWeek === 6) return false;
+                    } else if (activeTimeFilter === 'weekend') {
+                        if (dayOfWeek !== 0 && dayOfWeek !== 6) return false;
+                    }
+                }
+                return true;
+            });
+
+            processAndRenderData();
+        }
+
+        // ==========================================
+        // 📊 數據計算與渲染
+        // ==========================================
+        function processAndRenderData() {
             const total = evidenceData.length;
             $el('metric-total').innerText = total;
 
-            // 2. 行人動線受阻統計
+            if (total === 0) {
+                $el('metric-pedestrian').innerText = 0;
+                $el('metric-daily-avg-small').innerText = '0';
+                $el('metric-estimated-daily').innerText = '0 / 日';
+                $el('metric-peak-time').innerText = '--:--';
+                $el('hotspot-list').innerHTML = '<p class="text-slate-400 font-bold p-4">此過濾條件下無熱點資料</p>';
+                $el('ai-insight-text').innerHTML = '<p class="text-slate-500 font-bold">此篩選條件下無足夠數據產生報告。</p>';
+                if(charts.time) charts.time.data.datasets[0].data = new Array(24).fill(0);
+                if(charts.type) charts.type.data.datasets[0].data = [];
+                if(charts.time) charts.time.update();
+                if(charts.type) charts.type.update();
+                return;
+            }
+
             const pedestrianHazards = evidenceData.filter(i => 
                 (i.type || '').includes('佔用人行道') || 
                 (i.type || '').includes('行駛人行道') || 
@@ -361,7 +488,6 @@
             ).length;
             $el('metric-pedestrian').innerText = pedestrianHazards;
 
-            // 3. 採證區間 (日期) 與日均計算
             let minDate = "9999.99.99", maxDate = "0000.00.00";
             evidenceData.forEach(i => {
                 if (i.datetime) {
@@ -383,24 +509,18 @@
             }
 
             const dailyAvg = (total / days).toFixed(1);
-            const hourlyAvg = (total / (days * 24)).toFixed(2);
 
-            // 在地經驗推估模型 (客觀數據推算)
             const peakHoursPerDay = 4;
             const peakCasesPerHour = 13;
             const offPeakHoursPerDay = 6;
             const offPeakCasesPerHour = 5;
+            
             const estimatedDailyCases = (peakHoursPerDay * peakCasesPerHour) + (offPeakHoursPerDay * offPeakCasesPerHour);
-            const estimatedMonthlyCases = estimatedDailyCases * 30;
-            const estimatedHourlyCases = (estimatedDailyCases / 24).toFixed(1);
             const estimatedAnnualCases = estimatedDailyCases * 365;
 
-            $el('metric-daily-avg-small').innerText = `${dailyAvg} 件`;
-            $el('metric-hourly-avg-small').innerText = `${hourlyAvg} 件`;
-            $el('metric-estimated-monthly').innerText = `${estimatedMonthlyCases.toLocaleString('en-US')} 件`;
-            $el('metric-estimated-hourly').innerText = `約 ${estimatedHourlyCases} 件`;
+            $el('metric-daily-avg-small').innerText = `${dailyAvg}`;
+            $el('metric-estimated-daily').innerText = `${estimatedDailyCases}`;
 
-            // 4. 計算 24H 時間分佈
             const hourCounts = new Array(24).fill(0);
             evidenceData.forEach(item => {
                 if (item.datetime) {
@@ -411,26 +531,13 @@
             
             let peakHour = 0; let peakCount = 0;
             for(let i=0; i<24; i++){ if(hourCounts[i]>peakCount){ peakCount=hourCounts[i]; peakHour=i; } }
+            
             const formattedPeak = `${peakHour.toString().padStart(2, '0')}:00`;
             
             $el('metric-peak-time').innerText = formattedPeak;
             $el('metric-peak-count').innerText = peakCount;
+            $el('chart-peak-hour-text').innerText = `最高發生區間：${formattedPeak} (共 ${peakCount} 件)`;
 
-            // --- 產生高風險時段 Top 3 列表 ---
-            const sortedHours = hourCounts
-                .map((count, hour) => ({ hour, count }))
-                .filter(h => h.count > 0)
-                .sort((a, b) => b.count - a.count)
-                .slice(0, 3);
-            
-            $el('top-peak-hours').innerHTML = sortedHours.map((h, idx) => 
-                `<div class="flex justify-between items-center text-xs">
-                    <span class="text-slate-300">${idx + 1}. ${h.hour.toString().padStart(2, '0')}:00 區間</span>
-                    <span class="text-amber-400 font-mono">${h.count} 件</span>
-                </div>`
-            ).join('');
-
-            // 5. 空間熱區
             const locations = {};
             evidenceData.forEach(i => {
                 let loc = i.location || '未標示地點';
@@ -447,23 +554,30 @@
                 const bgStyle = isTop3 ? 'bg-rose-50 border-2 border-rose-200 shadow-sm' : 'bg-white border-2 border-slate-100 shadow-sm';
                 const rankColor = isTop3 ? 'text-white bg-rose-600 shadow-md' : 'text-slate-600 bg-slate-100 border-2 border-slate-200';
                 const barColor = isTop3 ? 'bg-gradient-to-r from-rose-500 to-rose-400' : 'bg-slate-400';
-                const textStyle = isTop3 ? 'text-rose-900 font-black text-lg flex items-center flex-wrap gap-1.5' : 'text-slate-700 font-bold text-base flex items-center flex-wrap gap-1.5';
+                const textStyle = isTop3 ? 'text-rose-900 font-black text-lg' : 'text-slate-700 font-bold text-base';
                 const valStyle = isTop3 ? 'text-rose-700 font-black text-xl' : 'text-slate-700 font-bold text-lg';
                 
-                // 📍 多重地標與違規障礙自動判定邏輯
+                // 📍 多重地標與違規障礙自動判定邏輯 (含新增之地標)
                 let badges = [];
                 if (loc[0].includes("49號")) badges.push("真善美牛肉麵前");
                 if (loc[0].includes("33號")) badges.push("安居7-11前");
                 if (loc[0].includes("77號")) badges.push("豆花王");
                 if (loc[0].includes("77號") || loc[0].includes("79號")) badges.push("水泥樓梯阻礙不符合法定最小寬度90cm");
                 
-                // 將所有符合的標籤轉換為 HTML
+                // 新增的地標對應
+                if (loc[0].includes("39號")) badges.push("天主教會右側人行道外推處");
+                if (loc[0].includes("10號")) badges.push("茶湯會人行道外推處");
+                if (loc[0].includes("30號")) badges.push("丐幫滷味人行道外推處");
+                if (loc[0].includes("15號")) badges.push("鮮綠果菜專賣店前");
+                if (loc[0].includes("40號")) badges.push("協力香雞排前");
+                if (loc[0].includes("46巷1號")) badges.push("鬍鬚張行人穿越道處"); // 🌟 更新地標
+                
                 const landmarkBadge = badges.map(b => `<span class="text-[11px] px-2 py-0.5 rounded-md border shadow-sm ${isTop3 ? 'bg-rose-100 text-rose-700 border-rose-300' : 'bg-slate-100 text-slate-500 border-slate-300'} font-bold whitespace-nowrap">${b}</span>`).join('');
 
                 return `
                 <div class="relative ${bgStyle} rounded-xl overflow-hidden p-4 flex flex-col gap-3 transition-all hover:scale-[1.02]">
                     <div class="flex justify-between items-center z-10">
-                        <div class="flex items-center gap-4 flex-1">
+                        <div class="flex items-center gap-4 flex-1 flex-wrap">
                             <div class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-black shrink-0 ${rankColor}">${index + 1}</div>
                             <span class="${textStyle}">${loc[0]} ${landmarkBadge}</span>
                         </div>
@@ -475,48 +589,43 @@
                 </div>`;
             }).join('');
 
-            // 6. 計算違規樣態分佈
             const typeCounts = {};
             evidenceData.forEach(i => { typeCounts[i.type] = (typeCounts[i.type] || 0) + 1; });
             const sortedTypes = Object.entries(typeCounts).sort((a,b)=>b[1]-a[1]);
-            const topType = sortedTypes.length > 0 ? sortedTypes[0][0] : '違規停車';
-
-            // --- 產生整體違規行為 Top 3 列表 ---
-            const top3Types = sortedTypes.slice(0, 3);
-            $el('top-violation-types').innerHTML = top3Types.map((t, idx) => 
-                `<div class="flex justify-between items-center text-xs">
-                    <span class="text-slate-300">${idx + 1}. ${t[0]}</span>
-                    <span class="text-rose-400 font-mono">${t[1]} 件</span>
-                </div>`
-            ).join('');
             
-            // 🚨 重點顏色與字體大小強調化之數據摘要
+            let filterNotice = activeTypeFilter ? `<span class="bg-indigo-100 text-indigo-800 border border-indigo-200 px-2 py-1 rounded text-lg font-black ml-2 shadow-sm">過濾視角：${activeTypeFilter}</span>` : '';
+            
             const insightText = `
-                <div class="mb-6 space-y-3">
-                    <h4 class="text-xl font-black text-slate-100 border-l-4 border-sky-500 pl-3">1. 觀測總量與推估模型</h4>
-                    <p class="text-slate-300 leading-relaxed">
-                        本觀測期內共記錄 <strong class="text-2xl text-sky-400 font-mono mx-1">${total}</strong> 件違規實證。需聲明，此為人工有限時段巡查之數據，並非全日完整觀測總量（觀測平均每小時發生 <strong class="text-lg text-sky-300">${hourlyAvg}</strong> 件）。<br><br>
-                        依據地區觀察經驗，若設定該路段主要活躍期為 11:00 至 21:00，並以尖峰時段每小時 <span class="text-amber-300 font-bold">${peakCasesPerHour}</span> 件之基準推算，<strong class="text-xl text-rose-400 block mt-2 mb-1">全日實際違規總數估值高達 <span class="text-3xl font-black mx-1">${estimatedDailyCases}</span> 件</strong>
-                        （平均每小時發生 <strong class="text-rose-300">${estimatedHourlyCases}</strong> 件）。依此模型計算，每月違規總數高達 <strong class="text-2xl text-rose-500 font-mono mx-1">${estimatedMonthlyCases.toLocaleString('en-US')}</strong> 件，全年潛在違規件數預估可達 <strong class="text-2xl text-rose-600 font-mono mx-1">${estimatedAnnualCases.toLocaleString('en-US')}</strong> 件。
+                <div class="mb-6">
+                    <h4 class="text-2xl font-black text-rose-700 mb-3 flex items-center gap-2">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        【極度危險】市政安全嚴重破口 ${filterNotice}
+                    </h4>
+                    <p class="text-lg text-slate-800 leading-relaxed font-medium">
+                        目前條件下共觀測得 <span class="text-3xl font-black text-rose-600 bg-rose-100 border border-rose-200 px-2 py-1 rounded mx-1">${total}</span> 件具體違規實證。
+                        該數據僅反映有限時間人力之抽樣結果。若按常理推演，<strong class="text-rose-700 text-xl border-b-2 border-rose-300">真實日均違規量高達 ${estimatedDailyCases} 件</strong>！這意味著全年將有超過 <strong class="text-rose-700 text-2xl font-black">${estimatedAnnualCases.toLocaleString('en-US')}</strong> 台車輛肆意佔用街道，嚴重侵害市民安全。
                     </p>
                 </div>
                 
-                <div class="mb-6 space-y-3">
-                    <h4 class="text-xl font-black text-slate-100 border-l-4 border-rose-500 pl-3">2. 空間分佈與行人安全影響</h4>
-                    <p class="text-slate-300 leading-relaxed">
-                        數據顯示，違規路段高度集中於 <strong class="text-xl text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded mx-1">${topHotspot}</strong> 及其周邊區域。<br><br>
-                        其中<span class="text-rose-400 font-bold text-lg">最嚴重之威脅在於：</span>路口之 <strong class="text-2xl text-rose-500 border-b-2 border-rose-500/50 mx-1">「人行道外推處 (Curb Extension)」</strong> 頻繁遭遇機動車輛違停。<br>
-                        此現象直接阻斷行人穿越道與無障礙坡道，<strong class="text-xl text-rose-400 mt-1 block">迫使嬰兒車、輪椅使用者及一般行人必須進入車道通行，大幅提升交通事故致命風險！</strong>
+                <div class="mb-8 p-5 bg-amber-50 border-l-8 border-amber-500 rounded-r-xl">
+                    <h4 class="text-xl font-black text-amber-900 mb-2 flex items-center gap-2">
+                        <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+                        空間分佈與弱勢威脅
+                    </h4>
+                    <p class="text-lg text-amber-900 leading-relaxed font-medium">
+                        實證顯示，違規熱點極度集中於 <strong class="text-2xl text-amber-700 bg-amber-200/60 px-2 py-0.5 rounded shadow-sm border border-amber-300">${topHotspot}</strong> 及其周邊。
+                        更致命的是，<strong>路口之「人行道外推處」頻繁遭機動車輛直接佔用</strong>！此違規行為徹底截斷了行人穿越道與無障礙動線，迫使輪椅使用者、推嬰兒車的父母及學童，必須被迫走上車道與車爭道，險象環生。
                     </p>
                 </div>
 
-                <div class="space-y-3">
-                    <h4 class="text-xl font-black text-slate-100 border-l-4 border-indigo-500 pl-3">3. 具體改善建議</h4>
-                    <p class="text-slate-300 leading-relaxed">
-                        事後之違規舉發無法即時排除當下對行人造成的實質阻礙。為確切保障行人路權及無障礙設施之可用性：<br><br>
-                        <strong class="text-2xl text-indigo-400 block mb-2">建議相關權責單位應立即評估：</strong>
-                        於「人行道外推處」等關鍵無障礙節點，<strong class="text-2xl text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded border border-emerald-500/30">重新建置實體金屬防護柵欄或防撞桿</strong>。<br>
-                        透過不可跨越的物理性防護設施，方能有效防止車輛違規駛入與停放，確保人行環境之連續性與絕對安全性。
+                <div class="p-6 bg-indigo-50 border-4 border-indigo-200 rounded-2xl shadow-sm">
+                    <h4 class="text-2xl md:text-3xl font-black text-indigo-900 mb-4 flex items-center gap-3">
+                        <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path></svg>
+                        強烈訴求：立即落實「實體物理防護」
+                    </h4>
+                    <p class="text-lg text-slate-800 leading-relaxed font-bold">
+                        事後的開單取締與科技執法，皆無法阻擋當下正在發生的物理危害。我們依據上述具體實證，<strong class="text-xl text-indigo-700 border-b-4 border-indigo-400">強烈要求市府相關局處：</strong><br><br>
+                        應立即於「人行道外推處」及高風險違規熱區，<span class="text-2xl md:text-3xl text-indigo-800 bg-indigo-200/80 px-2 py-1 rounded border-2 border-indigo-300 inline-block my-2 shadow-sm font-black">全面重建『實體金屬防護柵欄與防撞桿』</span>！<br>唯有透過不可跨越的物理防禦，才能從根本阻絕車輛入侵，徹底終結行人地獄，還給市民一條安全回家的路。
                     </p>
                 </div>
             `;
@@ -530,10 +639,15 @@
             if(charts.time) charts.time.destroy();
             if(charts.type) charts.type.destroy();
 
-            Chart.defaults.color = '#94a3b8';
-            Chart.defaults.font.family = "'Noto Sans TC', sans-serif";
+            Chart.defaults.color = '#475569';
+            Chart.defaults.font.family = "'JetBrains Mono', 'Noto Sans TC', sans-serif";
+            Chart.defaults.font.weight = 'bold';
 
             const ctxTime = $el('timeChart').getContext('2d');
+            const gradientSky = ctxTime.createLinearGradient(0, 0, 0, 300);
+            gradientSky.addColorStop(0, 'rgba(2, 132, 199, 0.4)'); 
+            gradientSky.addColorStop(1, 'rgba(2, 132, 199, 0.05)');
+
             charts.time = new Chart(ctxTime, {
                 type: 'line', 
                 data: {
@@ -541,14 +655,15 @@
                     datasets: [{
                         label: '違規件數',
                         data: hourCounts,
-                        backgroundColor: 'rgba(56, 189, 248, 0.1)',
-                        borderColor: '#38bdf8',
-                        borderWidth: 2,
-                        pointBackgroundColor: '#0f172a',
-                        pointBorderColor: '#38bdf8',
-                        pointRadius: 4,
+                        backgroundColor: gradientSky,
+                        borderColor: '#0284c7',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#ffffff',
+                        pointBorderColor: '#0284c7',
+                        pointBorderWidth: 3,
+                        pointRadius: 5,
                         fill: true,
-                        tension: 0.2
+                        tension: 0.3
                     }]
                 },
                 options: {
@@ -556,8 +671,8 @@
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-                        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, border: { display: false } },
-                        x: { grid: { color: 'rgba(255,255,255,0.05)' }, border: { display: false } }
+                        y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' }, border: { display: false }, ticks: { precision: 0, font: {size: 14} } },
+                        x: { grid: { color: 'rgba(0,0,0,0.02)' }, border: { display: false }, ticks: {font: {size: 12}} }
                     }
                 }
             });
@@ -569,26 +684,43 @@
                     labels: typeLabels,
                     datasets: [{
                         data: typeData,
-                        backgroundColor: ['#e11d48', '#d97706', '#059669', '#38bdf8', '#8b5cf6', '#ec4899', '#64748b', '#0ea5e9', '#f43f5e'],
-                        borderWidth: 2,
-                        borderColor: '#0f172a' 
+                        backgroundColor: ['#e11d48', '#d97706', '#059669', '#0284c7', '#7c3aed', '#db2777', '#475569', '#0891b2', '#f43f5e'],
+                        borderWidth: 3,
+                        borderColor: '#ffffff',
+                        hoverOffset: 10 
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    cutout: '70%',
+                    cutout: '65%',
                     plugins: {
                         legend: { 
                             position: 'right', 
-                            labels: { usePointStyle: true, padding: 15, color: '#cbd5e1', font: { size: 13 } } 
+                            labels: { usePointStyle: true, padding: 20, color: '#334155', font: { size: 14, weight: 'bold' } } 
                         }
+                    },
+                    onClick: (event, elements) => {
+                        // 🌟 點擊空白處或重複點擊同一個標籤即取消過濾
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            const label = typeLabels[index];
+                            if (activeTypeFilter === label) {
+                                clearTypeFilter(); // Toggle off
+                            } else {
+                                setTypeFilter(label); 
+                            }
+                        } else {
+                            clearTypeFilter(); // 點擊圖表內的非數據區塊，取消過濾
+                        }
+                    },
+                    onHover: (event, elements) => {
+                        event.native.target.style.cursor = elements.length > 0 ? 'pointer' : 'default';
                     }
                 }
             });
         }
 
-        // --- Google 地圖邏輯 ---
         function editMapLink() {
             const currentUrl = localStorage.getItem('public_dashboard_map_url') || DEFAULT_MAP_URL;
             $el('input-map-url').value = currentUrl;
@@ -607,7 +739,6 @@
                 closeMapModal(); return;
             }
 
-            // 自動將網址轉換為適合嵌入的模式
             if(url.includes('/edit?mid=')) url = url.replace('/edit?mid=', '/embed?mid=');
             else if(url.includes('/viewer?mid=')) url = url.replace('/viewer?mid=', '/embed?mid=');
             
