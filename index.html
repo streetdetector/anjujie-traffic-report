@@ -14,10 +14,10 @@
         }
     </script>
 
-    <!-- Chart.js -->
+    <!-- 🌟 補齊缺少的外部套件 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- html2canvas (社群截圖用) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script> <!-- 修復：下載圖片套件 -->
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700;800&display=swap');
@@ -383,6 +383,18 @@
         </div>
     </div>
 
+    <!-- 🌟 修復：全域載入進度遮罩 (Loading Overlay) -->
+    <div id="loading-overlay" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[4000] hidden flex-col items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 max-w-sm w-full shadow-2xl text-center border border-slate-200 dark:border-slate-700">
+            <svg class="animate-spin h-10 w-10 text-indigo-600 dark:text-indigo-400 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2" id="loading-title">處理中...</h3>
+            <p class="text-sm text-slate-500 dark:text-slate-400 font-medium" id="loading-desc">請稍候</p>
+        </div>
+    </div>
+
+    <!-- 🌟 修復：Toast 通知容器 -->
+    <div id="toast-container" class="fixed bottom-5 right-5 flex flex-col gap-3 z-[5000] pointer-events-none"></div>
+
     <script>
         // 🌟 核心防呆安全賦值機制 (Safe Setters)
         const $el = (id) => document.getElementById(id);
@@ -391,6 +403,35 @@
         const setTxt = (id, txt) => { const el = $el(id); if (el) el.innerText = txt; };
         const setHtml = (id, html) => { const el = $el(id); if (el) el.innerHTML = html; };
         
+        // 🌟 修復：新增 UI 通知函數
+        function showLoading(title, desc) {
+            const el = $el('loading-overlay');
+            if(el) {
+                setTxt('loading-title', title);
+                setTxt('loading-desc', desc);
+                el.classList.remove('hidden');
+                el.classList.add('flex');
+            }
+        }
+        function hideLoading() {
+            const el = $el('loading-overlay');
+            if(el) {
+                el.classList.add('hidden');
+                el.classList.remove('flex');
+            }
+        }
+        function showToast(message, type = 'info') {
+            const container = $el('toast-container');
+            if(!container) return;
+            const toast = document.createElement('div');
+            const bgClass = type === 'error' ? 'bg-rose-600' : (type === 'success' ? 'bg-emerald-600' : 'bg-slate-800');
+            toast.className = `${bgClass} text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 transform transition-all duration-300 translate-y-10 opacity-0 pointer-events-auto`;
+            toast.innerHTML = `<span class="font-bold text-sm">${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.remove('translate-y-10', 'opacity-0'), 10);
+            setTimeout(() => { toast.classList.add('translate-y-10', 'opacity-0'); setTimeout(() => toast.remove(), 300); }, 4000);
+        }
+
         // 核心狀態管理
         let rawEvidenceData = []; 
         let evidenceData = []; 
@@ -674,10 +715,10 @@
                 if (loc[0].includes("49號")) badges.push("真善美牛肉麵前");
                 if (loc[0].includes("33號")) badges.push("安居7-11前");
                 if (loc[0].includes("77號")) badges.push("豆花王");
-                if (loc[0].includes("77號") || loc[0].includes("79號")) badges.push("水泥樓梯阻礙(未達90cm)");
-                if (loc[0].includes("39號")) badges.push("天主教會人行道外推");
-                if (loc[0].includes("10號")) badges.push("茶湯會人行道外推");
-                if (loc[0].includes("30號")) badges.push("丐幫滷味人行道外推");
+                if (loc[0].includes("77號") || loc[0].includes("79號")) badges.push("水泥樓梯阻礙不符合法定最小寬度90cm");
+                if (loc[0].includes("39號")) badges.push("天主教會右側人行道外推處");
+                if (loc[0].includes("10號")) badges.push("茶湯會人行道外推處");
+                if (loc[0].includes("30號")) badges.push("丐幫滷味人行道外推處");
                 if (loc[0].includes("15號")) badges.push("鮮綠果菜專賣店前");
                 if (loc[0].includes("40號")) badges.push("協力香雞排前");
                 if (loc[0].includes("46巷1號")) badges.push("鬍鬚張行人穿越道處"); 
@@ -934,14 +975,14 @@
             if (evidenceData.length === 0) return showToast('無資料可匯出', 'error');
             let csv = "\uFEFF時間,地點,緯度,經度,車牌,違規樣態,嚴重程度\n";
             evidenceData.forEach(i => csv += `"${i.datetime||''}","${i.location||''}",${i.lat||''},${i.lng||''},"${i.plate||''}","${i.type||''}",${i.severity||1}\n`);
-            saveAs(new Blob([csv], {type: "text/csv;charset=utf-8"}), `OpenData_${new Date().toISOString().slice(0,10)}.csv`);
+            window.saveAs(new Blob([csv], {type: "text/csv;charset=utf-8"}), `OpenData_${new Date().toISOString().slice(0,10)}.csv`);
         }
 
         // ==========================================
         // 📸 產出社群分享圖 (P1: Share Card)
         // ==========================================
         async function generateShareCard() {
-            showLoading('正在產出圖片', '捕捉視覺化數據中...', 1);
+            showLoading('正在產出圖片', '捕捉視覺化數據中...');
             const target = $el('share-card-target');
             const originalPadding = target.style.padding;
             target.style.padding = '24px';
@@ -954,12 +995,17 @@
                 });
                 
                 canvas.toBlob(function(blob) {
-                    saveAs(blob, `安居街違停觀測速報_${new Date().toISOString().slice(0,10)}.png`);
-                    hideLoading(); showToast('✅ 截圖已下載，歡迎分享至社群！', 'success');
+                    window.saveAs(blob, `安居街違停觀測速報_${new Date().toISOString().slice(0,10)}.png`);
+                    hideLoading(); 
+                    showToast('✅ 截圖已下載，歡迎分享至社群！', 'success');
                 });
             } catch (err) {
-                console.error(err); hideLoading(); showToast('產生截圖失敗', 'error');
-            } finally { target.style.padding = originalPadding; }
+                console.error(err); 
+                hideLoading(); 
+                showToast('產生截圖失敗', 'error');
+            } finally { 
+                target.style.padding = originalPadding; 
+            }
         }
 
         // --- Google 地圖邏輯 ---
