@@ -101,7 +101,7 @@
     <div id="empty-state" class="max-w-3xl mx-auto px-4 mt-24 text-center hidden">
         <div class="dashboard-card p-16 border-dashed border-2">
             <div class="w-24 h-24 bg-slate-100 border-2 border-slate-200 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg class="w-12 h-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                <svg class="w-12 h-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
             </div>
             <h2 class="text-3xl font-black text-slate-800 mb-3">等待載入數據</h2>
             <p class="text-slate-500 mb-8 max-w-md mx-auto text-lg font-medium">資料庫已就緒。如果您尚未設定內建數據，請點擊右上方載入系統產製的 JSON 數據檔以顯示視覺化分析。</p>
@@ -410,7 +410,7 @@
             "version": "16.0",
             "exportDate": "2026-04-30T12:00:00.000Z",
             "settings": {
-                "title": "安居街周邊專案採證報告",
+                "title": "安居街周邊違規停車狀況專案採證報告",
                 "investigator": "在地居民與通行權關注組"
             },
             "data": [
@@ -436,10 +436,10 @@
                 applyMapIframe(url);
             }
 
-            // 嘗試抓取外部的 data.json，防快取
+            // 🌟 嘗試抓取外部的 data.json，附帶防快取機制
             fetchExternalData();
 
-            // 🌟 點擊非圖表區塊時，自動清除樣態過濾
+            // 點擊非圖表區塊時，自動清除樣態過濾
             document.addEventListener('click', (e) => {
                 if (activeTypeFilter !== null) {
                     const isClickInsideChart = e.target.closest('#type-chart-card');
@@ -480,6 +480,7 @@
 
         async function fetchExternalData() {
             try {
+                // 加入時間戳記避免 GitHub Pages 快取
                 const response = await fetch('./data.json?t=' + new Date().getTime(), { cache: "no-store" });
                 if (!response.ok) throw new Error("無外部檔案");
                 const parsed = await response.json();
