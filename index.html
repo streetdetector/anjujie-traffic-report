@@ -17,7 +17,7 @@
     <!-- 🌟 補齊缺少的外部套件 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script> <!-- 修復：下載圖片套件 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700;800&display=swap');
@@ -138,6 +138,16 @@
                 
                 <!-- 🌟 交叉過濾器控制列 -->
                 <div class="flex flex-wrap items-center gap-2 bg-slate-100 dark:bg-slate-800/80 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-inner w-full md:w-auto">
+                    
+                    <!-- 🗓️ 新增：月份過濾器 -->
+                    <select id="month-filter-select" onchange="setMonthFilter(this.value)" class="filter-btn px-3 py-1.5 text-sm font-bold rounded-lg border-2 border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:border-slate-300 dark:hover:border-slate-500 shadow-sm cursor-pointer outline-none focus:border-indigo-500">
+                        <option value="all">🗓️ 所有月份</option>
+                        <!-- 選項由 JS 動態生成 -->
+                    </select>
+                    
+                    <div class="w-px h-6 bg-slate-300 dark:bg-slate-600 mx-1"></div>
+
+                    <!-- 既有時間過濾器 -->
                     <button id="btn-filter-all" onclick="setTimeFilter('all')" class="filter-btn px-4 py-1.5 text-sm font-bold rounded-lg bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 shadow-sm">全覽</button>
                     <button id="btn-filter-7days" onclick="setTimeFilter('7days')" class="filter-btn px-4 py-1.5 text-sm font-bold rounded-lg text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-700">近7天</button>
                     <button id="btn-filter-weekday" onclick="setTimeFilter('weekday')" class="filter-btn px-4 py-1.5 text-sm font-bold rounded-lg text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-700">平日</button>
@@ -161,7 +171,7 @@
                 <div class="dashboard-card p-6 flex flex-col justify-between border-t-8 border-t-sky-600 bg-white dark:bg-slate-800 shadow-md">
                     <p class="text-base font-black text-sky-800 dark:text-sky-400 mb-4 flex items-center justify-between">
                         實體影像採證總數
-                        <span class="bg-sky-100 text-sky-700 px-2 py-0.5 rounded text-[10px] border border-sky-200 uppercase font-black">極限抽樣</span>
+                        <span class="bg-sky-100 text-sky-700 px-2 py-0.5 rounded text-[10px] border border-sky-200 uppercase font-black">當前篩選</span>
                     </p>
                     <div class="flex items-baseline gap-2 mb-2">
                         <h3 class="text-6xl font-black text-sky-700 dark:text-sky-400 font-mono tracking-tighter" id="metric-total">0</h3>
@@ -185,7 +195,7 @@
                         <span class="text-xl text-purple-600 dark:text-purple-500 font-bold">次威脅</span>
                     </div>
                     <p class="text-xs text-purple-900 dark:text-purple-300 font-bold mt-2 leading-relaxed opacity-80">
-                        依據模型推算：尖峰時段平均每 <span id="metric-frequency" class="text-rose-600 dark:text-rose-400 font-black text-sm bg-rose-100 dark:bg-rose-900/50 px-1 rounded mx-0.5">0</span> 分鐘就有一台車公然違法，徹底癱瘓街廓。
+                        依據每日 <span id="metric-estimated-daily" class="font-mono">0</span> 件之在地模型推算，常態性癱瘓街廓秩序。
                     </p>
                 </div>
 
@@ -201,7 +211,7 @@
                         <span class="text-xl font-bold">萬元/年</span>
                     </div>
                     <p class="text-xs text-amber-900 dark:text-amber-300 font-bold mt-2 leading-relaxed opacity-80">
-                        市府寧可放任上千萬潛在罰鍰白白流失，也不願落實實體防護，違法成本由全民買單。
+                        以均價 900 元推算。寧可放任上千萬罰鍰流失，也不願落實實體防禦。
                     </p>
                 </div>
 
@@ -243,7 +253,7 @@
         <!-- 空間與地理分析 (Google Maps & Hotspots) -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            <!-- 🌟 Google 地圖 (跨 2 欄) 絕對禁止濾鏡 -->
+            <!-- Google 地圖 (跨 2 欄) 絕對禁止濾鏡 -->
             <div class="lg:col-span-2 dashboard-card overflow-hidden flex flex-col h-[600px] border-2 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 z-10 shadow-lg">
                 <div class="px-6 py-4 border-b-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex justify-between items-center z-20">
                     <h2 class="font-black text-xl flex items-center gap-3 tracking-wider text-slate-800 dark:text-white">
@@ -383,7 +393,7 @@
         </div>
     </div>
 
-    <!-- 🌟 修復：全域載入進度遮罩 (Loading Overlay) -->
+    <!-- 全域載入進度遮罩 (Loading Overlay) -->
     <div id="loading-overlay" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[4000] hidden flex-col items-center justify-center p-4">
         <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 max-w-sm w-full shadow-2xl text-center border border-slate-200 dark:border-slate-700">
             <svg class="animate-spin h-10 w-10 text-indigo-600 dark:text-indigo-400 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
@@ -392,7 +402,7 @@
         </div>
     </div>
 
-    <!-- 🌟 修復：Toast 通知容器 -->
+    <!-- Toast 通知容器 -->
     <div id="toast-container" class="fixed bottom-5 right-5 flex flex-col gap-3 z-[5000] pointer-events-none"></div>
 
     <script>
@@ -403,7 +413,6 @@
         const setTxt = (id, txt) => { const el = $el(id); if (el) el.innerText = txt; };
         const setHtml = (id, html) => { const el = $el(id); if (el) el.innerHTML = html; };
         
-        // 🌟 修復：新增 UI 通知函數
         function showLoading(title, desc) {
             const el = $el('loading-overlay');
             if(el) {
@@ -441,6 +450,7 @@
         // 過濾器與頁面狀態
         let activeTimeFilter = 'all'; 
         let activeTypeFilter = null; 
+        let activeMonthFilter = 'all'; // 🌟 新增：月份過濾器狀態
         let isDarkMode = false;
         let currentPage = 1;
         const ITEMS_PER_PAGE = 10;
@@ -459,9 +469,9 @@
                 { "id": "demo1", "datetime": "2026.04.28 11:30", "location": "台北市大安區安居街4號", "plate": "ABC-1234", "type": "汽車佔用人行道", "severity": 3, "lat": 25.0215, "lng": 121.5542 },
                 { "id": "demo2", "datetime": "2026.04.28 12:15", "location": "台北市大安區安居街33號", "plate": "DEF-5678", "type": "並排停車", "severity": 3, "lat": 25.0211, "lng": 121.5545 },
                 { "id": "demo3", "datetime": "2026.04.25 18:45", "location": "台北市大安區安居街8號", "plate": "GHI-9012", "type": "紅線違停", "severity": 2, "lat": 25.0214, "lng": 121.5543 },
-                { "id": "demo4", "datetime": "2026.04.29 08:30", "location": "台北市大安區安居街10號", "plate": "JKL-3456", "type": "機車佔用人行道", "severity": 3, "lat": 25.0213, "lng": 121.5544 },
-                { "id": "demo5", "datetime": "2026.04.26 14:20", "location": "台北市大安區安居街77號", "plate": "MNO-7890", "type": "汽車佔用人行道", "severity": 3, "lat": 25.0205, "lng": 121.5551 },
-                { "id": "demo6", "datetime": "2026.04.26 15:10", "location": "台北市大安區安居街46巷1號", "plate": "XYZ-9999", "type": "汽車違停", "severity": 2, "lat": 25.0208, "lng": 121.5548 }
+                { "id": "demo4", "datetime": "2026.05.02 08:30", "location": "台北市大安區安居街10號", "plate": "JKL-3456", "type": "機車佔用人行道", "severity": 3, "lat": 25.0213, "lng": 121.5544 },
+                { "id": "demo5", "datetime": "2026.05.05 14:20", "location": "台北市大安區安居街77號", "plate": "MNO-7890", "type": "汽車佔用人行道", "severity": 3, "lat": 25.0205, "lng": 121.5551 },
+                { "id": "demo6", "datetime": "2026.05.08 15:10", "location": "台北市大安區安居街46巷1號", "plate": "XYZ-9999", "type": "汽車違停", "severity": 2, "lat": 25.0208, "lng": 121.5548 }
             ]
         };
 
@@ -478,7 +488,7 @@
                 applyMapIframe(url);
             }
 
-            // 🌟 嘗試抓取外部的 data.json，附帶防快取機制
+            // 嘗試抓取外部的 data.json，附帶防快取機制
             fetchExternalData();
 
             // 點擊非圖表區塊時，自動清除樣態過濾
@@ -489,8 +499,9 @@
                     const isClickOnTimeFilter = e.target.closest('.filter-btn');
                     const isClickOnMapModal = e.target.closest('#map-modal');
                     const isClickOnImport = e.target.closest('input[type="file"]') || e.target.closest('label');
+                    const isClickOnMonthFilter = e.target.closest('#month-filter-select');
 
-                    if (!isClickInsideChart && !isClickInsideFilterBadge && !isClickOnTimeFilter && !isClickOnMapModal && !isClickOnImport) {
+                    if (!isClickInsideChart && !isClickInsideFilterBadge && !isClickOnTimeFilter && !isClickOnMapModal && !isClickOnImport && !isClickOnMonthFilter) {
                         clearTypeFilter();
                     }
                 }
@@ -531,6 +542,7 @@
                 rawEvidenceData = parsed.data;
                 projectInfo = parsed.settings || {};
                 
+                populateMonthOptions(); // 🌟 解析並填充月份選單
                 renderHeader();
                 applyFilters();
             } catch (err) {
@@ -544,7 +556,10 @@
                 if (!EMBEDDED_JSON_DATA || !EMBEDDED_JSON_DATA.data) { showEl('empty-state'); return; }
                 rawEvidenceData = EMBEDDED_JSON_DATA.data;
                 projectInfo = EMBEDDED_JSON_DATA.settings || {};
-                renderHeader(); applyFilters(); 
+                
+                populateMonthOptions(); // 🌟 解析並填充月份選單
+                renderHeader(); 
+                applyFilters(); 
             } catch (err) { console.error(err); }
         }
 
@@ -556,8 +571,15 @@
                     const parsed = JSON.parse(e.target.result); 
                     if (!parsed.data) throw new Error("無效的資料格式");
                     rawEvidenceData = parsed.data; projectInfo = parsed.settings || {};
-                    activeTimeFilter = 'all'; activeTypeFilter = null; updateFilterUI();
-                    renderHeader(); applyFilters();
+                    
+                    activeTimeFilter = 'all'; 
+                    activeTypeFilter = null; 
+                    activeMonthFilter = 'all';
+                    
+                    populateMonthOptions(); // 🌟 解析並填充月份選單
+                    updateFilterUI();
+                    renderHeader(); 
+                    applyFilters();
                 } catch (err) { alert("無法載入檔案，請確認是否為正確 json 格式。"); }
                 event.target.value = '';
             }; 
@@ -583,11 +605,40 @@
         // ==========================================
         // 🔄 智能過濾器邏輯
         // ==========================================
+        
+        // 🌟 自動解析並填充月份選單
+        function populateMonthOptions() {
+            const select = $el('month-filter-select');
+            if (!select) return;
+            
+            const months = new Set();
+            rawEvidenceData.forEach(item => {
+                if (item.datetime) {
+                    const m = item.datetime.substring(0, 7); // 擷取 "YYYY.MM"
+                    if (m.match(/^\d{4}\.\d{2}$/)) months.add(m);
+                }
+            });
+            
+            const sortedMonths = Array.from(months).sort().reverse(); // 由新到舊排序
+            
+            let html = '<option value="all">🗓️ 所有月份</option>';
+            sortedMonths.forEach(m => {
+                html += `<option value="${m}">${m.replace('.', '年')}月</option>`;
+            });
+            
+            select.innerHTML = html;
+            select.value = activeMonthFilter; // 保持選取狀態
+        }
+
         function setTimeFilter(filterType) { activeTimeFilter = filterType; updateFilterUI(); applyFilters(); }
         function setTypeFilter(typeStr) { activeTypeFilter = typeStr; updateFilterUI(); applyFilters(); }
         function clearTypeFilter() { activeTypeFilter = null; updateFilterUI(); applyFilters(); }
+        
+        // 🌟 處理月份選擇
+        function setMonthFilter(val) { activeMonthFilter = val; updateFilterUI(); applyFilters(); }
 
         function updateFilterUI() {
+            // 更新時間按鈕狀態
             ['all', '7days', 'weekday', 'weekend'].forEach(f => {
                 const btn = $el(`btn-filter-${f}`); if (!btn) return;
                 if (f === activeTimeFilter) {
@@ -597,6 +648,11 @@
                 }
             });
 
+            // 更新月份下拉選單狀態
+            const monthSelect = $el('month-filter-select');
+            if (monthSelect) monthSelect.value = activeMonthFilter;
+
+            // 更新樣態鎖定徽章
             if (activeTypeFilter) {
                 setTxt('active-type-name', activeTypeFilter); showEl('active-type-filter-container');
             } else {
@@ -615,7 +671,15 @@
             const sevenDaysAgo = maxTime - (7 * 24 * 60 * 60 * 1000);
 
             evidenceData = rawEvidenceData.filter(item => {
+                // 1. 樣態交叉過濾
                 if (activeTypeFilter && item.type !== activeTypeFilter) return false;
+                
+                // 2. 🌟 月份過濾
+                if (activeMonthFilter !== 'all') {
+                    if (!item.datetime || !item.datetime.startsWith(activeMonthFilter)) return false;
+                }
+
+                // 3. 星期與相對時間過濾
                 if (activeTimeFilter !== 'all') {
                     if (!item.datetime) return false;
                     const d = new Date(item.datetime.replace(/\./g, '-'));
@@ -756,11 +820,13 @@
             setTxt('chart-peak-hour-text', `目前篩選條件下最高發生區間：${formattedPeak} (共 ${peakCount} 件)`);
             
             let filterNotice = activeTypeFilter ? `<span class="bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200 px-2 py-1 rounded text-lg font-black ml-2 shadow-sm">過濾視角：${activeTypeFilter}</span>` : '';
+            if (activeMonthFilter !== 'all') {
+                filterNotice += `<span class="bg-slate-800 text-white dark:bg-slate-100 dark:text-slate-900 px-2 py-1 rounded text-lg font-black ml-2 shadow-sm">${activeMonthFilter.replace('.', '年')}月</span>`;
+            }
             
-            // 🌟 極限武裝升級：核彈級的證詞文案
             const insightText = `
                 <div class="mb-8">
-                    <h4 class="text-2xl font-black text-rose-700 dark:text-rose-400 mb-4 flex items-center gap-2">
+                    <h4 class="text-2xl font-black text-rose-700 dark:text-rose-400 mb-4 flex items-center gap-2 flex-wrap">
                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                         【數據揭露的殘酷真相：失控的交通暴力】 ${filterNotice}
                     </h4>
@@ -787,7 +853,7 @@
                         最後通牒：終結官僚殺人，立即落實物理防禦
                     </h4>
                     <p class="text-lg text-slate-800 dark:text-slate-300 leading-relaxed font-bold">
-                        我們拒絕再聽信「加強巡邏」等推託之詞，事後的開單根本無法阻擋當下正在發生的致命危害。基於上述血淋淋的實證，我們對台北市政府下達強烈訴求：<br><br>
+                        我們拒絕再聽信「加強巡邏」、「科技執法研議中」等推託之詞，事後的開單根本無法阻擋當下正在發生的致命危害。基於上述血淋淋的實證，我們對台北市政府下達強烈訴求：<br><br>
                         必須立即於安居街全線之「人行道外推處」及高風險路口，<span class="text-2xl md:text-3xl text-indigo-800 dark:text-indigo-300 bg-indigo-200/80 dark:bg-indigo-900/50 px-2 py-1 rounded border-2 border-indigo-300 dark:border-indigo-700 inline-block my-2 shadow-sm font-black">全面施作『實體金屬防撞桿與護欄』</span>！<br>寧可用幾萬塊的硬體設施保障生命，也絕不容許上千萬元的違法外部成本，由弱勢行人的鮮血來買單。
                     </p>
                 </div>
@@ -814,6 +880,12 @@
             let countP1 = 0, countP2 = 0;
             rawEvidenceData.forEach(item => {
                 if (activeTypeFilter && item.type !== activeTypeFilter) return;
+                
+                // 🌟 趨勢計算也必須尊重當前的月份過濾器
+                if (activeMonthFilter !== 'all') {
+                    if (!item.datetime || !item.datetime.startsWith(activeMonthFilter)) return;
+                }
+
                 if (!item.datetime) return;
                 const t = new Date(item.datetime.replace(/\./g, '-')).getTime();
                 if (t >= p1Start && t <= maxTime) countP1++;
