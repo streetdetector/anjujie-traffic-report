@@ -79,7 +79,7 @@
                             市政交通違規觀測儀表板
                             <span class="px-2.5 py-1 rounded-md text-[10px] bg-rose-100 text-rose-800 dark:bg-rose-900 dark:text-rose-200 border border-rose-200 dark:border-rose-700 font-bold uppercase tracking-wider hidden md:inline-block animate-pulse">Critical Warning</span>
                         </h1>
-                        <!-- 🕒 自動快照時間 (P1) -->
+                        <!-- 🕒 自動快照時間 -->
                         <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400 mt-0.5 hidden sm:flex items-center gap-1.5">
                             <span class="w-2 h-2 rounded-full bg-emerald-500"></span> 
                             數據庫狀態：Live | 快照時間：<span id="data-timestamp">載入中...</span>
@@ -163,10 +163,10 @@
             </div>
         </div>
 
-        <!-- 📸 全域截圖目標區塊 -->
+        <!-- 📸 截圖目標區塊 -->
         <div id="share-card-target" class="space-y-6 bg-slate-50 dark:bg-slate-900 p-2 -m-2 rounded-2xl">
             
-            <!-- 🚨 危害等級佔比條 (P2) -->
+            <!-- 🚨 危害等級佔比條 -->
             <div class="w-full bg-white dark:bg-slate-800 rounded-xl p-4 shadow-md border border-slate-200 dark:border-slate-700">
                 <div class="flex justify-between items-end mb-2">
                     <span class="text-xs font-black tracking-widest text-slate-500 dark:text-slate-400 uppercase">危害等級結構分析 (SEVERITY BREAKDOWN)</span>
@@ -217,7 +217,7 @@
                     </p>
                 </div>
 
-                <!-- 指標 3: 財務痛點 (怠忽開罰代價) -->
+                <!-- 指標 3: 財務痛點 -->
                 <div class="dashboard-card p-6 flex flex-col justify-between border-t-8 border-t-amber-500 bg-amber-50 dark:bg-amber-900/10 shadow-md border border-amber-200 dark:border-amber-800">
                     <p class="text-base font-black text-amber-800 dark:text-amber-400 mb-4 flex items-center justify-between">
                         市府怠忽執法流失罰鍰
@@ -233,7 +233,7 @@
                     </p>
                 </div>
 
-                <!-- 指標 4: 致命風險 (逼迫車道) -->
+                <!-- 指標 4: 致命風險 -->
                 <div class="dashboard-card hazard-border p-6 flex flex-col justify-between bg-rose-50 dark:bg-rose-900/20 shadow-xl border border-rose-300 dark:border-rose-800">
                     <div class="flex justify-between items-start mb-4 relative z-10">
                         <div class="flex items-center gap-2">
@@ -251,9 +251,9 @@
                 </div>
             </div>
 
-            <!-- 強而有力的證詞 (AI Insight) 帶有產圖按鈕 -->
+            <!-- 強而有力的證詞 (AI Insight) -->
             <div class="dashboard-card p-8 border-2 border-slate-800 dark:border-slate-600 shadow-lg bg-white dark:bg-slate-800 relative group" id="insight-card">
-                <!-- 📸 獨立截圖按鈕 (P2) -->
+                <!-- 📸 獨立截圖按鈕 -->
                 <button onclick="captureModule('insight-card', '安居街_市政安全通牒')" class="absolute top-4 right-4 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity" title="獨立擷取此區塊圖片">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                 </button>
@@ -263,7 +263,6 @@
                         <div class="p-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-lg shadow-md"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg></div>
                         市政控訴與防禦通牒
                     </h3>
-                    <!-- 全域截圖 -->
                     <button onclick="generateShareCard()" class="hidden md:flex shrink-0 items-center gap-2 bg-indigo-600 text-white px-5 py-2.5 rounded-xl font-bold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-500/30" title="產生全覽高畫質戰情報告圖片">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                         產出全版社群證詞
@@ -274,16 +273,19 @@
 
         </div>
 
-        <!-- 空間與地理分析 (Google Maps & Hotspots) -->
+        <!-- 空間與地理分析 -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            <!-- 🌟 Google 地圖 (跨 2 欄) 絕對禁止濾鏡 -->
             <div class="lg:col-span-2 dashboard-card overflow-hidden flex flex-col h-[600px] border-2 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 z-10 shadow-lg">
                 <div class="px-6 py-4 border-b-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex justify-between items-center z-20">
                     <h2 class="font-black text-xl flex items-center gap-3 tracking-wider text-slate-800 dark:text-white">
                         <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
                         全境空間分佈總覽 (Google My Maps)
                     </h2>
+                    <button onclick="editMapLink()" class="text-sm font-bold text-slate-500 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400 transition-colors flex items-center gap-1 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 px-3 py-1.5 rounded-lg shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                        更換圖資
+                    </button>
                 </div>
                 <div class="absolute top-[80px] right-4 z-20 bg-white/90 dark:bg-slate-800/90 backdrop-blur text-slate-600 dark:text-slate-300 text-[10px] font-bold px-2 py-1 rounded shadow border border-slate-200 dark:border-slate-700 pointer-events-none">
                     ⚠️ 地圖為獨立總圖資，不隨條件過濾。
@@ -316,7 +318,7 @@
             </div>
         </div>
 
-        <!-- 🌟 新增：圖表與慣犯追蹤 (3 Column Grid) -->
+        <!-- 🌟 圖表與慣犯追蹤 -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <!-- 24H 時間分佈圖 -->
             <div class="dashboard-card p-6 border-2 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-lg group" id="time-chart-card">
@@ -351,7 +353,7 @@
                 </div>
             </div>
             
-            <!-- 🌟 新增：交通毒瘤 慣犯追蹤雷達 (P0) -->
+            <!-- 🌟 交通毒瘤 慣犯追蹤雷達 -->
             <div class="dashboard-card flex flex-col h-[384px] border-2 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-lg group" id="offender-card">
                 <button onclick="captureModule('offender-card', '安居街_交通毒瘤慣犯名單')" class="absolute top-3 right-4 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 p-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity z-30" title="獨立擷取圖片">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
@@ -361,7 +363,8 @@
                         <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path></svg>
                         「交通毒瘤」慣犯追蹤
                     </h2>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-bold">已自動合併頭尾 3 分鐘採證紀錄 (2張=1次)</p>
+                    <!-- 🌟 說明文字更新：強調 30 分鐘分群邏輯 -->
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-bold">已自動合併當日 30 分鐘內之連續採證紀錄</p>
                 </div>
                 <div class="flex-1 overflow-y-auto p-5 space-y-3 hide-scrollbar" id="offender-list">
                     <!-- JS 動態生成 -->
@@ -369,7 +372,7 @@
             </div>
         </div>
 
-        <!-- 🌟 原始資料分頁表 & 全境天眼搜尋 (P0) -->
+        <!-- 🌟 原始資料分頁表 & 全境天眼搜尋 -->
         <div class="dashboard-card border-2 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 overflow-hidden mb-12 shadow-lg" id="raw-data-section">
             <div class="px-6 md:px-8 py-5 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <h2 class="font-black text-xl flex items-center gap-3 tracking-wider text-slate-800 dark:text-white shrink-0">
@@ -377,7 +380,6 @@
                     全境天眼資料庫 (Open Raw Data)
                 </h2>
                 
-                <!-- 🌟 搜尋框 (P0) -->
                 <div class="relative w-full md:max-w-xs">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
@@ -387,7 +389,6 @@
             </div>
             
             <div class="overflow-x-auto">
-                <!-- 🌟 支援點擊標題排序 (P0) -->
                 <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-700 text-sm">
                     <thead class="bg-slate-50 dark:bg-slate-900/50">
                         <tr>
@@ -418,7 +419,7 @@
 
     </div>
 
-    <!-- 📱 行動端浮動指揮中心 (Mobile FAB) (P1) -->
+    <!-- 📱 行動端浮動指揮中心 (Mobile FAB) -->
     <div class="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[4000] flex gap-2 bg-slate-900/95 dark:bg-white/95 backdrop-blur-md p-1.5 rounded-full shadow-2xl border border-slate-700 dark:border-slate-200 transition-transform duration-300 transform translate-y-0" id="mobile-fab">
         <button onclick="document.getElementById('filter-section').scrollIntoView({behavior: 'smooth'})" class="text-white dark:text-slate-900 px-5 py-2.5 text-sm font-black flex items-center gap-2 hover:bg-slate-800 dark:hover:bg-slate-100 rounded-full transition-colors">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
@@ -452,7 +453,6 @@
     <div id="toast-container" class="fixed bottom-5 right-5 flex flex-col gap-3 z-[7000] pointer-events-none"></div>
 
     <script>
-        // 🌟 核心防呆安全賦值機制 (Safe Setters)
         const $el = (id) => document.getElementById(id);
         const showEl = (id) => { const el = $el(id); if (el) el.classList.remove('hidden'); };
         const hideEl = (id) => { const el = $el(id); if (el) el.classList.add('hidden'); };
@@ -487,14 +487,12 @@
             setTimeout(() => { toast.classList.add('translate-y-10', 'opacity-0'); setTimeout(() => toast.remove(), 300); }, 4000);
         }
 
-        // 核心狀態管理
         let rawEvidenceData = []; 
         let evidenceData = []; 
-        let tableData = []; // 專供表格搜尋與排序使用
+        let tableData = []; 
         let projectInfo = {};
         let charts = {}; 
 
-        // 過濾器與表格狀態
         let activeTimeFilter = 'all'; 
         let activeTypeFilter = null; 
         let activeMonthFilter = 'all'; 
@@ -505,9 +503,6 @@
         let sortCol = 'datetime';
         let sortAsc = false;
 
-        // ==========================================
-        // 📥 內建展示數據
-        // ==========================================
         const EMBEDDED_JSON_DATA = {
             "version": "16.0",
             "exportDate": "2026-05-10T08:30:00.000Z",
@@ -517,11 +512,11 @@
             },
             "data": [
                 { "id": "demo1", "datetime": "2026.04.28 11:30", "location": "台北市大安區安居街4號", "plate": "ABC-1234", "type": "汽車佔用人行道", "severity": 3, "lat": 25.0215, "lng": 121.5542 },
-                { "id": "demo2", "datetime": "2026.04.28 12:15", "location": "台北市大安區安居街33號", "plate": "DEF-5678", "type": "並排停車", "severity": 3, "lat": 25.0211, "lng": 121.5545 },
-                { "id": "demo3", "datetime": "2026.04.25 18:45", "location": "台北市大安區安居街8號", "plate": "ABC-1234", "type": "紅線違停", "severity": 2, "lat": 25.0214, "lng": 121.5543 },
+                { "id": "demo2", "datetime": "2026.04.28 11:32", "location": "台北市大安區安居街4號", "plate": "ABC-1234", "type": "汽車佔用人行道", "severity": 3, "lat": 25.0215, "lng": 121.5542 },
+                { "id": "demo3", "datetime": "2026.04.25 18:45", "location": "台北市大安區安居街8號", "plate": "GHI-9012", "type": "紅線違停", "severity": 2, "lat": 25.0214, "lng": 121.5543 },
                 { "id": "demo4", "datetime": "2026.05.02 08:30", "location": "台北市大安區安居街10號", "plate": "JKL-3456", "type": "機車佔用人行道", "severity": 3, "lat": 25.0213, "lng": 121.5544 },
                 { "id": "demo5", "datetime": "2026.05.05 14:20", "location": "台北市大安區安居街77號", "plate": "MNO-7890", "type": "汽車佔用人行道", "severity": 3, "lat": 25.0205, "lng": 121.5551 },
-                { "id": "demo6", "datetime": "2026.05.08 15:10", "location": "台北市大安區安居街46巷1號", "plate": "ABC-1234", "type": "汽車違停", "severity": 2, "lat": 25.0208, "lng": 121.5548 }
+                { "id": "demo6", "datetime": "2026.05.08 15:10", "location": "台北市大安區安居街46巷1號", "plate": "XYZ-9999", "type": "汽車違停", "severity": 2, "lat": 25.0208, "lng": 121.5548 }
             ]
         };
 
@@ -539,7 +534,6 @@
 
             fetchExternalData();
 
-            // 點擊外部清除圖表過濾
             document.addEventListener('click', (e) => {
                 if (activeTypeFilter !== null) {
                     const isClickInsideChart = e.target.closest('#type-chart-card');
@@ -554,23 +548,19 @@
                 }
             });
 
-            // 手機版浮動按鈕滾動隱藏邏輯
             let lastScrollY = window.scrollY;
             window.addEventListener('scroll', () => {
                 const fab = $el('mobile-fab');
                 if(!fab) return;
                 if (window.scrollY > lastScrollY && window.scrollY > 100) {
-                    fab.style.transform = 'translate(-50%, 150%)'; // 往下隱藏
+                    fab.style.transform = 'translate(-50%, 150%)'; 
                 } else {
-                    fab.style.transform = 'translate(-50%, 0)'; // 往上顯示
+                    fab.style.transform = 'translate(-50%, 0)'; 
                 }
                 lastScrollY = window.scrollY;
             });
         };
 
-        // ==========================================
-        // 🌓 深色模式切換
-        // ==========================================
         function initTheme() {
             if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 isDarkMode = true; document.documentElement.classList.add('dark');
@@ -744,11 +734,8 @@
                 return true;
             });
             
-            // 同步將 filtered data 交給 Table 用的獨立資料陣列
             tableData = [...evidenceData];
-            
-            // 如果搜尋框有字，重新過濾 tableData
-            applyTableSearch(false); // false 代表不連動上方的圖表
+            applyTableSearch(false);
             
             currentPage = 1; 
             processAndRenderData();
@@ -773,7 +760,6 @@
                 setHtml('ai-insight-text', '<p class="text-slate-500 font-bold">此篩選條件下無足夠數據產生報告。</p>');
                 setTxt('chart-peak-hour-text', '無時段資料');
                 
-                // 歸零進度條
                 if($el('sev-3-bar')) $el('sev-3-bar').style.width = '0%';
                 if($el('sev-2-bar')) $el('sev-2-bar').style.width = '0%';
                 if($el('sev-1-bar')) $el('sev-1-bar').style.width = '0%';
@@ -785,7 +771,6 @@
                 renderTable(); return;
             }
 
-            // 🚨 危害等級進度條 (P2)
             let sev3 = 0, sev2 = 0, sev1 = 0;
             evidenceData.forEach(i => {
                 if (i.severity === 3) sev3++;
@@ -819,7 +804,6 @@
                 const diffTime = Math.abs(t2 - t1); days = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; 
             } else { setTxt('metric-date-range', '未知'); }
 
-            // 黑數推算模型
             const peakHoursPerDay = 4; const peakCasesPerHour = 13; const offPeakHoursPerDay = 6; const offPeakCasesPerHour = 5;
             const estimatedDailyCases = (peakHoursPerDay * peakCasesPerHour) + (offPeakHoursPerDay * offPeakCasesPerHour);
             const estimatedAnnualCases = estimatedDailyCases * 365;
@@ -831,7 +815,6 @@
             setTxt('metric-estimated-daily', estimatedDailyCases);
             setTxt('metric-frequency', minsPerCase);
 
-            // --- 📍 熱門地點排序 ---
             const locations = {};
             evidenceData.forEach(i => {
                 let loc = i.location || '未標示地點';
@@ -851,7 +834,6 @@
                 const textStyle = isTop3 ? 'text-rose-900 dark:text-rose-400 font-black text-lg flex items-center flex-wrap gap-1.5' : 'text-slate-700 dark:text-slate-300 font-bold text-base flex items-center flex-wrap gap-1.5';
                 const valStyle = isTop3 ? 'text-rose-700 dark:text-rose-400 font-black text-xl' : 'text-slate-700 dark:text-slate-300 font-bold text-lg';
                 
-                // 📍 地標轉換
                 let badges = [];
                 if (loc[0].includes("49號")) badges.push("真善美牛肉麵前");
                 if (loc[0].includes("33號")) badges.push("安居7-11前");
@@ -882,7 +864,7 @@
                 </div>`;
             }).join(''));
 
-            // --- 🚗 慣犯追蹤雷達 (P0) 🌟 已修正為：2次採證=1次實際違規 ---
+            // --- 🚗 慣犯追蹤雷達 (P0) 🌟 已修正為：同日30分鐘內連續採證=1次實際違規 ---
             function maskPlate(plate) {
                 if (!plate || plate.length < 4 || plate === '未知') return '未知車牌';
                 if(plate.includes('-')) {
@@ -895,17 +877,51 @@
             const plates = {};
             evidenceData.forEach(i => {
                 if(i.plate && i.plate.length > 3 && i.plate !== '未知') {
-                    plates[i.plate] = (plates[i.plate] || 0) + 1;
+                    if (!plates[i.plate]) plates[i.plate] = { dates: [], totalPhotos: 0 };
+                    plates[i.plate].totalPhotos++;
+                    if (i.datetime) {
+                        const t = new Date(i.datetime.replace(/\./g, '-').replace(' ', 'T'));
+                        if (!isNaN(t.getTime())) {
+                            plates[i.plate].dates.push(t);
+                        }
+                    }
                 }
             });
             
-            // 🌟 將總照片數換算成真實違規次數 (除以 2 並無條件捨去)
-            const processedPlates = Object.entries(plates).map(([plate, photoCount]) => {
-                const actualViolations = Math.floor(photoCount / 2);
+            // 🌟 將總照片數換算成真實違規次數 (同日且30分鐘內視為同一次違規)
+            const processedPlates = Object.entries(plates).map(([plate, data]) => {
+                const dates = data.dates;
+                const photoCount = data.totalPhotos;
+                dates.sort((a, b) => a.getTime() - b.getTime());
+                
+                let actualViolations = 0;
+                let i = 0;
+                while (i < dates.length) {
+                    actualViolations++;
+                    let j = i + 1;
+                    while (j < dates.length) {
+                        const diffMs = dates[j].getTime() - dates[i].getTime();
+                        const diffMins = diffMs / (1000 * 60);
+                        const isSameDay = dates[i].toDateString() === dates[j].toDateString();
+                        
+                        if (isSameDay && diffMins <= 30) {
+                            j++; // 歸類為同一舉證事件
+                        } else {
+                            break;
+                        }
+                    }
+                    i = j;
+                }
+                
+                // 保底計算防呆
+                if (dates.length === 0 && photoCount > 0) {
+                    actualViolations = Math.floor(photoCount / 2) || 1;
+                }
+                
                 return { plate, photoCount, actualViolations };
             });
 
-            // 🌟 篩選出「實際違規次數」大於 1 的慣犯，先按違規次數排，再按照片數排
+            // 🌟 篩選出「實際違規次數」大於 1 的慣犯
             const sortedPlates = processedPlates
                 .filter(p => p.actualViolations > 1)
                 .sort((a,b) => b.actualViolations - a.actualViolations || b.photoCount - a.photoCount)
@@ -932,7 +948,7 @@
                     </div>`;
                 }).join(''));
             } else {
-                setHtml('offender-list', '<p class="text-slate-500 font-bold p-4">目前篩選範圍內無重複違規車輛 (已扣除3分鐘舉證基準)。</p>');
+                setHtml('offender-list', '<p class="text-slate-500 font-bold p-4">目前篩選範圍內無重複違規車輛 (已排除當日30分鐘內之連續採證)。</p>');
             }
 
             const hourCounts = new Array(24).fill(0);
@@ -983,7 +999,7 @@
                         最後通牒：終結官僚殺人，立即落實物理防禦
                     </h4>
                     <p class="text-lg text-slate-800 dark:text-slate-300 leading-relaxed font-bold">
-                        我們拒絕再聽信「加強巡邏」等推託之詞，事後的開單根本無法阻擋當下正在發生的致命危害。基於上述血淋淋的實證，我們對台北市政府下達強烈訴求：<br><br>
+                        我們拒絕再聽信任何推託之詞，事後的開單根本無法阻擋當下正在發生的致命危害。基於上述血淋淋的實證，我們對台北市政府下達強烈訴求：<br><br>
                         必須立即於安居街全線之「人行道外推處」及高風險路口，<span class="text-2xl md:text-3xl text-indigo-800 dark:text-indigo-300 bg-indigo-200/80 dark:bg-indigo-900/50 px-2 py-1 rounded border-2 border-indigo-300 dark:border-indigo-700 inline-block my-2 shadow-sm font-black">全面施作『實體金屬防撞桿與護欄』</span>！<br>寧可用幾萬塊的硬體設施保障生命，也絕不容許上千萬元的違法外部成本，由弱勢行人的鮮血來買單。
                     </p>
                 </div>
@@ -994,7 +1010,6 @@
             window._lastHourCounts = hourCounts; window._lastTypeLabels = sortedTypes.map(t=>t[0]); window._lastTypeData = sortedTypes.map(t=>t[1]);
             renderCharts(hourCounts, sortedTypes.map(t=>t[0]), sortedTypes.map(t=>t[1]));
             
-            // 這裡不直接調用 renderTable()，因為可能使用者有在搜尋，交給 applyTableSearch 處理
             applyTableSearch(false);
         }
 
@@ -1099,7 +1114,6 @@
                         legend: { position: 'right', labels: { usePointStyle: true, padding: 20, color: fontColor, font: { size: 14, weight: 'bold' } } }
                     },
                     onClick: (event, elements) => {
-                        // 🌟 點擊空白處或重複點擊同一個標籤即取消過濾
                         if (elements.length > 0) {
                             const index = elements[0].index; const label = typeLabels[index];
                             if (activeTypeFilter === label) clearTypeFilter(); else setTypeFilter(label); 
@@ -1113,17 +1127,14 @@
         // ==========================================
         // 🗃️ 全境天眼搜尋與原始資料表 (P0: Raw Data Table)
         // ==========================================
-        
         function applyTableSearch(triggerProcess = true) {
             const keyword = ($el('raw-search-input').value || '').toLowerCase();
             
-            // 從目前的 evidenceData 進行進一步的文字搜尋
             tableData = evidenceData.filter(item => {
                 if (!keyword) return true;
                 return `${item.plate||''} ${item.location||''} ${item.type||''}`.toLowerCase().includes(keyword);
             });
             
-            // 處理排序
             tableData.sort((a, b) => {
                 let valA = a[sortCol] || ''; let valB = b[sortCol] || '';
                 if (sortCol === 'severity') { valA = a.severity || 1; valB = b.severity || 1; }
@@ -1217,7 +1228,6 @@
         function exportToCSV() {
             if (tableData.length === 0) return showToast('無資料可匯出', 'error');
             let csv = "\uFEFF時間,地點,緯度,經度,車牌,違規樣態,嚴重程度\n";
-            // 匯出時提供真實無遮蔽之車牌供研究用
             tableData.forEach(i => csv += `"${i.datetime||''}","${i.location||''}",${i.lat||''},${i.lng||''},"${i.plate||''}","${i.type||''}",${i.severity||1}\n`);
             window.saveAs(new Blob([csv], {type: "text/csv;charset=utf-8"}), `OpenData_Filtered_${new Date().toISOString().slice(0,10)}.csv`);
         }
