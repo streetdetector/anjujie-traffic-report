@@ -453,6 +453,7 @@
     <div id="toast-container" class="fixed bottom-5 right-5 flex flex-col gap-3 z-[7000] pointer-events-none"></div>
 
     <script>
+        // 🌟 核心防呆安全賦值機制 (Safe Setters)
         const $el = (id) => document.getElementById(id);
         const showEl = (id) => { const el = $el(id); if (el) el.classList.remove('hidden'); };
         const hideEl = (id) => { const el = $el(id); if (el) el.classList.add('hidden'); };
@@ -485,6 +486,22 @@
             container.appendChild(toast);
             setTimeout(() => toast.classList.remove('translate-y-10', 'opacity-0'), 10);
             setTimeout(() => { toast.classList.add('translate-y-10', 'opacity-0'); setTimeout(() => toast.remove(), 300); }, 4000);
+        }
+
+        // 🌟 新增：車牌自動格式化正規化功能 (確保都有 - 符號)
+        function normalizePlate(plate) {
+            if (!plate || plate === '未知') return plate || '';
+            let p = plate.toUpperCase().trim();
+            if (p.includes('-')) return p;
+            
+            // 自動補上 - 符號 (前英後數、或前數後英)
+            const match1 = p.match(/^([A-Z]+)(\d+)$/);
+            if (match1) return `${match1[1]}-${match1[2]}`;
+            
+            const match2 = p.match(/^(\d+)([A-Z]+)$/);
+            if (match2) return `${match2[1]}-${match2[2]}`;
+            
+            return p;
         }
 
         let rawEvidenceData = []; 
@@ -589,6 +606,9 @@
                 if (!parsed || !parsed.data) throw new Error("格式錯誤");
                 
                 rawEvidenceData = parsed.data;
+                // 🌟 自動正規化車牌格式
+                rawEvidenceData.forEach(item => item.plate = normalizePlate(item.plate));
+
                 projectInfo = parsed.settings || {};
                 projectInfo.exportDate = parsed.exportDate;
                 
@@ -604,7 +624,10 @@
         function loadEmbeddedData() {
             try {
                 if (!EMBEDDED_JSON_DATA || !EMBEDDED_JSON_DATA.data) { showEl('empty-state'); return; }
-                rawEvidenceData = EMBEDDED_JSON_DATA.data;
+                rawEvidenceData = JSON.parse(JSON.stringify(EMBEDDED_JSON_DATA.data));
+                // 🌟 自動正規化車牌格式
+                rawEvidenceData.forEach(item => item.plate = normalizePlate(item.plate));
+
                 projectInfo = EMBEDDED_JSON_DATA.settings || {};
                 projectInfo.exportDate = EMBEDDED_JSON_DATA.exportDate;
                 
@@ -622,14 +645,18 @@
                     const parsed = JSON.parse(e.target.result); 
                     if (!parsed.data) throw new Error("無效的資料格式");
                     
-                    if (rawEvidenceData.length === 0 || rawEvidenceData === EMBEDDED_JSON_DATA.data) {
+                    if (rawEvidenceData.length === 0 || projectInfo.title === EMBEDDED_JSON_DATA.settings.title) {
                         rawEvidenceData = parsed.data; 
+                        // 🌟 自動正規化車牌格式
+                        rawEvidenceData.forEach(item => item.plate = normalizePlate(item.plate));
+
                         projectInfo = parsed.settings || {};
                         projectInfo.exportDate = parsed.exportDate;
                         showToast(`成功載入 ${parsed.data.length} 筆資料`, 'success');
                     } else {
                         let addedCount = 0;
                         parsed.data.forEach(newItem => {
+                            newItem.plate = normalizePlate(newItem.plate); // 🌟 自動正規化車牌格式
                             const exists = rawEvidenceData.find(old => old.id === newItem.id);
                             if (!exists) { rawEvidenceData.push(newItem); addedCount++; }
                         });
@@ -864,7 +891,6 @@
                 </div>`;
             }).join(''));
 
-            // --- 🚗 慣犯追蹤雷達 (P0) 🌟 已修正為：同日30分鐘內連續採證=1次實際違規 ---
             function maskPlate(plate) {
                 if (!plate || plate.length < 4 || plate === '未知') return '未知車牌';
                 if(plate.includes('-')) {
@@ -888,7 +914,6 @@
                 }
             });
             
-            // 🌟 將總照片數換算成真實違規次數 (同日且30分鐘內視為同一次違規)
             const processedPlates = Object.entries(plates).map(([plate, data]) => {
                 const dates = data.dates;
                 const photoCount = data.totalPhotos;
@@ -905,7 +930,7 @@
                         const isSameDay = dates[i].toDateString() === dates[j].toDateString();
                         
                         if (isSameDay && diffMins <= 30) {
-                            j++; // 歸類為同一舉證事件
+                            j++; 
                         } else {
                             break;
                         }
@@ -913,7 +938,6 @@
                     i = j;
                 }
                 
-                // 保底計算防呆
                 if (dates.length === 0 && photoCount > 0) {
                     actualViolations = Math.floor(photoCount / 2) || 1;
                 }
@@ -921,7 +945,6 @@
                 return { plate, photoCount, actualViolations };
             });
 
-            // 🌟 篩選出「實際違規次數」大於 1 的慣犯
             const sortedPlates = processedPlates
                 .filter(p => p.actualViolations > 1)
                 .sort((a,b) => b.actualViolations - a.actualViolations || b.photoCount - a.photoCount)
@@ -1128,11 +1151,14 @@
         // 🗃️ 全境天眼搜尋與原始資料表 (P0: Raw Data Table)
         // ==========================================
         function applyTableSearch(triggerProcess = true) {
-            const keyword = ($el('raw-search-input').value || '').toLowerCase();
+            const rawKeyword = ($el('raw-search-input').value || '').toLowerCase();
+            const keywordNoDash = rawKeyword.replace(/-/g, '');
             
             tableData = evidenceData.filter(item => {
-                if (!keyword) return true;
-                return `${item.plate||''} ${item.location||''} ${item.type||''}`.toLowerCase().includes(keyword);
+                if (!rawKeyword) return true;
+                const searchStrNormal = `${item.plate||''} ${item.location||''} ${item.type||''}`.toLowerCase();
+                const searchStrNoDash = `${(item.plate||'').replace(/-/g, '')} ${item.location||''} ${item.type||''}`.toLowerCase();
+                return searchStrNormal.includes(rawKeyword) || searchStrNoDash.includes(keywordNoDash);
             });
             
             tableData.sort((a, b) => {
@@ -1228,6 +1254,7 @@
         function exportToCSV() {
             if (tableData.length === 0) return showToast('無資料可匯出', 'error');
             let csv = "\uFEFF時間,地點,緯度,經度,車牌,違規樣態,嚴重程度\n";
+            // 匯出時提供真實無遮蔽之車牌供研究用
             tableData.forEach(i => csv += `"${i.datetime||''}","${i.location||''}",${i.lat||''},${i.lng||''},"${i.plate||''}","${i.type||''}",${i.severity||1}\n`);
             window.saveAs(new Blob([csv], {type: "text/csv;charset=utf-8"}), `OpenData_Filtered_${new Date().toISOString().slice(0,10)}.csv`);
         }
