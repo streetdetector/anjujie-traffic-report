@@ -229,7 +229,7 @@
                         <span class="text-xl font-bold">萬元/年</span>
                     </div>
                     <p class="text-xs text-amber-900 dark:text-amber-300 font-bold mt-2 leading-relaxed opacity-80">
-                        以均價 900 元推算。市府寧可放任上千萬潛在罰鍰白白流失，也不願落實實體防護，違法成本由全民買單。
+                        以均價 900 元推算。寧可放任上千萬罰鍰流失，也不願落實實體防禦。
                     </p>
                 </div>
 
@@ -277,7 +277,7 @@
         <!-- 空間與地理分析 (Google Maps & Hotspots) -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            <!-- 🌟 Google 地圖 (跨 2 欄) -->
+            <!-- 🌟 Google 地圖 (跨 2 欄) 絕對禁止濾鏡 -->
             <div class="lg:col-span-2 dashboard-card overflow-hidden flex flex-col h-[600px] border-2 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 z-10 shadow-lg">
                 <div class="px-6 py-4 border-b-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex justify-between items-center z-20">
                     <h2 class="font-black text-xl flex items-center gap-3 tracking-wider text-slate-800 dark:text-white">
@@ -361,6 +361,7 @@
                         <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path></svg>
                         「交通毒瘤」慣犯追蹤
                     </h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-bold">已自動合併頭尾 3 分鐘採證紀錄 (2張=1次)</p>
                 </div>
                 <div class="flex-1 overflow-y-auto p-5 space-y-3 hide-scrollbar" id="offender-list">
                     <!-- JS 動態生成 -->
@@ -881,7 +882,7 @@
                 </div>`;
             }).join(''));
 
-            // --- 🚗 慣犯追蹤雷達 (P0) ---
+            // --- 🚗 慣犯追蹤雷達 (P0) 🌟 已修正為：2次採證=1次實際違規 ---
             function maskPlate(plate) {
                 if (!plate || plate.length < 4 || plate === '未知') return '未知車牌';
                 if(plate.includes('-')) {
@@ -897,12 +898,23 @@
                     plates[i.plate] = (plates[i.plate] || 0) + 1;
                 }
             });
-            const sortedPlates = Object.entries(plates).sort((a,b)=>b[1]-a[1]).filter(p => p[1] > 1).slice(0, 10); // 只顯示 > 1 次的
+            
+            // 🌟 將總照片數換算成真實違規次數 (除以 2 並無條件捨去)
+            const processedPlates = Object.entries(plates).map(([plate, photoCount]) => {
+                const actualViolations = Math.floor(photoCount / 2);
+                return { plate, photoCount, actualViolations };
+            });
+
+            // 🌟 篩選出「實際違規次數」大於 1 的慣犯，先按違規次數排，再按照片數排
+            const sortedPlates = processedPlates
+                .filter(p => p.actualViolations > 1)
+                .sort((a,b) => b.actualViolations - a.actualViolations || b.photoCount - a.photoCount)
+                .slice(0, 10);
             
             if (sortedPlates.length > 0) {
-                const maxPlateCount = sortedPlates[0][1];
+                const maxViolations = sortedPlates[0].actualViolations;
                 setHtml('offender-list', sortedPlates.map((p, index) => {
-                    const percentage = (p[1] / maxPlateCount) * 100;
+                    const percentage = (p.actualViolations / maxViolations) * 100;
                     const isTop3 = index < 3;
                     const bgStyle = isTop3 ? 'bg-purple-50 border border-purple-200 dark:bg-purple-900/10 dark:border-purple-800' : 'bg-white border border-slate-100 dark:bg-slate-800 dark:border-slate-700';
                     const barColor = isTop3 ? 'bg-purple-500' : 'bg-slate-400 dark:bg-slate-500';
@@ -910,14 +922,17 @@
                     return `
                     <div class="${bgStyle} rounded-lg p-3 flex flex-col gap-2 relative">
                         <div class="flex justify-between items-center z-10">
-                            <span class="font-mono font-black text-lg tracking-wider ${isTop3 ? 'text-purple-700 dark:text-purple-400' : 'text-slate-700 dark:text-slate-300'}">${maskPlate(p[0])}</span>
-                            <span class="text-sm font-bold ${isTop3 ? 'text-purple-600 dark:text-purple-400' : 'text-slate-500 dark:text-slate-400'} bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-inherit shadow-sm">累犯 ${p[1]} 次</span>
+                            <span class="font-mono font-black text-lg tracking-wider ${isTop3 ? 'text-purple-700 dark:text-purple-400' : 'text-slate-700 dark:text-slate-300'}">${maskPlate(p.plate)}</span>
+                            <div class="flex flex-col items-end">
+                                <span class="text-sm font-bold ${isTop3 ? 'text-purple-600 dark:text-purple-400' : 'text-slate-500 dark:text-slate-400'} bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-inherit shadow-sm">違規 ${p.actualViolations} 次</span>
+                                <span class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">${p.photoCount} 張採證</span>
+                            </div>
                         </div>
                         <div class="w-full h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden z-10"><div class="h-full ${barColor} rounded-full" style="width: ${percentage}%"></div></div>
                     </div>`;
                 }).join(''));
             } else {
-                setHtml('offender-list', '<p class="text-slate-500 font-bold p-4">目前篩選範圍內無重複違規車輛資料。</p>');
+                setHtml('offender-list', '<p class="text-slate-500 font-bold p-4">目前篩選範圍內無重複違規車輛 (已扣除3分鐘舉證基準)。</p>');
             }
 
             const hourCounts = new Array(24).fill(0);
