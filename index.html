@@ -221,7 +221,7 @@
                 <div class="dashboard-card p-6 flex flex-col justify-between border-t-8 border-t-amber-500 bg-amber-50 dark:bg-amber-900/10 shadow-md border border-amber-200 dark:border-amber-800">
                     <p class="text-base font-black text-amber-800 dark:text-amber-400 mb-4 flex items-center justify-between">
                         市府怠忽執法流失罰鍰
-                        <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08-.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </p>
                     <div class="flex items-baseline gap-2 mb-2 text-amber-600 dark:text-amber-500">
                         <span class="text-2xl font-black">約$</span>
@@ -229,7 +229,7 @@
                         <span class="text-xl font-bold">萬元/年</span>
                     </div>
                     <p class="text-xs text-amber-900 dark:text-amber-300 font-bold mt-2 leading-relaxed opacity-80">
-                        市府寧可放任上千萬潛在罰鍰白白流失，也不願落實實體防護，違法成本由全民買單。
+                        以均價 900 元推算。市府寧可放任上千萬潛在罰鍰白白流失，也不願落實實體防護，違法成本由全民買單。
                     </p>
                 </div>
 
@@ -855,10 +855,10 @@
                 if (loc[0].includes("49號")) badges.push("真善美牛肉麵前");
                 if (loc[0].includes("33號")) badges.push("安居7-11前");
                 if (loc[0].includes("77號")) badges.push("豆花王");
-                if (loc[0].includes("77號") || loc[0].includes("79號")) badges.push("水泥樓梯阻礙");
-                if (loc[0].includes("39號")) badges.push("天主教會人行道外推");
-                if (loc[0].includes("10號")) badges.push("茶湯會人行道外推");
-                if (loc[0].includes("30號")) badges.push("丐幫滷味人行道外推");
+                if (loc[0].includes("77號") || loc[0].includes("79號")) badges.push("水泥樓梯阻礙不符合法定最小寬度90cm");
+                if (loc[0].includes("39號")) badges.push("天主教會右側人行道外推處");
+                if (loc[0].includes("10號")) badges.push("茶湯會人行道外推處");
+                if (loc[0].includes("30號")) badges.push("丐幫滷味人行道外推處");
                 if (loc[0].includes("15號")) badges.push("鮮綠果菜專賣店前");
                 if (loc[0].includes("40號")) badges.push("協力香雞排前");
                 if (loc[0].includes("46巷1號")) badges.push("鬍鬚張行人穿越道處"); 
@@ -968,7 +968,7 @@
                         最後通牒：終結官僚殺人，立即落實物理防禦
                     </h4>
                     <p class="text-lg text-slate-800 dark:text-slate-300 leading-relaxed font-bold">
-                        我們拒絕再聽信「加強巡邏」、「科技執法研議中」等推託之詞，事後的開單根本無法阻擋當下正在發生的致命危害。基於上述血淋淋的實證，我們對台北市政府下達強烈訴求：<br><br>
+                        我們拒絕再聽信「加強巡邏」等推託之詞，事後的開單根本無法阻擋當下正在發生的致命危害。基於上述血淋淋的實證，我們對台北市政府下達強烈訴求：<br><br>
                         必須立即於安居街全線之「人行道外推處」及高風險路口，<span class="text-2xl md:text-3xl text-indigo-800 dark:text-indigo-300 bg-indigo-200/80 dark:bg-indigo-900/50 px-2 py-1 rounded border-2 border-indigo-300 dark:border-indigo-700 inline-block my-2 shadow-sm font-black">全面施作『實體金屬防撞桿與護欄』</span>！<br>寧可用幾萬塊的硬體設施保障生命，也絕不容許上千萬元的違法外部成本，由弱勢行人的鮮血來買單。
                     </p>
                 </div>
@@ -1022,7 +1022,7 @@
         }
 
         // ==========================================
-        // 📊 圖表渲染
+        // 📊 圖表渲染 (適應深色模式)
         // ==========================================
         function renderCharts(hourCounts, typeLabels, typeData) {
             if(charts.time) charts.time.destroy();
@@ -1052,7 +1052,10 @@
                         borderWidth: 3,
                         pointBackgroundColor: isDarkMode ? '#0f172a' : '#ffffff',
                         pointBorderColor: isDarkMode ? '#38bdf8' : '#0284c7',
-                        pointBorderWidth: 3, pointRadius: 5, fill: true, tension: 0.3
+                        pointBorderWidth: 3,
+                        pointRadius: 5,
+                        fill: true,
+                        tension: 0.3
                     }]
                 },
                 options: {
@@ -1077,8 +1080,11 @@
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false, cutout: '65%',
-                    plugins: { legend: { position: 'right', labels: { usePointStyle: true, padding: 20, color: fontColor, font: { size: 14, weight: 'bold' } } } },
+                    plugins: {
+                        legend: { position: 'right', labels: { usePointStyle: true, padding: 20, color: fontColor, font: { size: 14, weight: 'bold' } } }
+                    },
                     onClick: (event, elements) => {
+                        // 🌟 點擊空白處或重複點擊同一個標籤即取消過濾
                         if (elements.length > 0) {
                             const index = elements[0].index; const label = typeLabels[index];
                             if (activeTypeFilter === label) clearTypeFilter(); else setTypeFilter(label); 
