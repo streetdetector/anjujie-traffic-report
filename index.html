@@ -104,7 +104,7 @@
         </div>
     </nav>
 
-    <!-- 🌟 系統載入失敗時的錯誤提示 (移除了原本的展示資料，改為強制提示) -->
+    <!-- 🌟 系統載入失敗時的錯誤提示 -->
     <div id="empty-state" class="max-w-3xl mx-auto px-4 mt-24 text-center hidden">
         <div class="dashboard-card p-10 sm:p-16 border-dashed border-2 border-rose-300 bg-rose-50 dark:bg-rose-900/20 dark:border-rose-800 shadow-sm">
             <div class="w-24 h-24 bg-rose-100 dark:bg-rose-900/50 border-2 border-rose-200 dark:border-rose-700 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
@@ -601,24 +601,28 @@
         };
 
         // ==========================================
-        // 🌟 行動端與 FB 瀏覽器相容版 fetch 邏輯
+        // 🌟 行動端與 FB 瀏覽器相容版 fetch 邏輯 (絕對網址修復版)
         // ==========================================
         async function fetchExternalData() {
             try {
-                // 1. 解決 FB 或手機瀏覽器吃掉結尾斜線，導致路徑解析錯誤的終極方案
-                let basePath = window.location.pathname;
-                if (!basePath.endsWith('/') && !basePath.includes('.html')) {
-                    basePath += '/';
-                } else if (basePath.includes('.html')) {
-                    basePath = basePath.substring(0, basePath.lastIndexOf('/') + 1);
-                }
-                const jsonUrl = basePath + 'data.json';
-
-                // 2. 移除 { cache: "no-store" }，避免 iOS Safari / 行動版 Webview 安全性阻擋
-                // 單純依靠後方的時間戳記 (?t=...) 即可完美防止快取
-                const response = await fetch(jsonUrl + '?t=' + new Date().getTime());
+                // 【終極解法】組裝 100% 絕對完整網址 (Fully Qualified URL)
+                // 取得包含 https://網域 的完整基礎路徑
+                let baseUrl = window.location.origin + window.location.pathname;
                 
-                if (!response.ok) throw new Error("無外部檔案");
+                // 確保路徑是以資料夾結尾，而不是單一檔案結尾
+                baseUrl = baseUrl.replace(/\/[^\/]*\.html$/, '/');
+                if (!baseUrl.endsWith('/')) {
+                    baseUrl += '/';
+                }
+
+                // 組合成完整的絕對網址，例如：https://streetdetector.github.io/anjujie-traffic-report/data.json?t=123...
+                const fullAbsoluteUrl = baseUrl + 'data.json?t=' + new Date().getTime();
+                
+                console.log("嘗試抓取絕對網址:", fullAbsoluteUrl); // 開發者除錯用
+
+                const response = await fetch(fullAbsoluteUrl);
+                
+                if (!response.ok) throw new Error("無外部檔案 (HTTP 狀態碼: " + response.status + ")");
                 const parsed = await response.json();
                 if (!parsed || !parsed.data) throw new Error("格式錯誤");
                 
