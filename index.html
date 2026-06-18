@@ -616,6 +616,8 @@
                 renderHeader();
                 applyFilters();
             } catch (err) {
+                alert("🚨 系統除錯報告 🚨\n\n錯誤原因：" + err.message + "\n\n嘗試抓取的網址：\n" + (typeof fullAbsoluteUrl !== 'undefined' ? fullAbsoluteUrl : '未生成'));
+                
                 console.warn("無法載入 data.json，顯示錯誤提示", err);
                 showErrorState();
             }
